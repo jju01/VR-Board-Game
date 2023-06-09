@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FruiteSpawner : MonoBehaviour
 {
+    public static FruiteSpawner Instance;
+
     private Collider spawnArea;
 
     public GameObject[] fruitPrefabs;
@@ -25,6 +27,7 @@ public class FruiteSpawner : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         spawnArea = GetComponent<Collider>();
     }
 
