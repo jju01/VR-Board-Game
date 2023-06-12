@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 // 역할 : 얼음이 그릇에 모두 충돌했을 때 게임 클리어
 
@@ -10,7 +11,7 @@ public class MiniGameIce : MonoBehaviour
     public int count = 0;
 
     // 효과음
-    private AudioSource audio;
+    //private AudioSource audio;
     // 정지상태 
     private bool IsPause;
 
@@ -19,6 +20,9 @@ public class MiniGameIce : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject resultPanel;
     public GameObject itemPanel;
+
+    private ExitGames.Client.Photon.Hashtable PlayerCustomProperties = new ExitGames.Client.Photon.Hashtable();
+    private string miniGameIceKey = "MiniGameIce";
 
     // 싱글톤으로 만들어서 관리
     public static MiniGameIce Instance;
@@ -44,7 +48,7 @@ public class MiniGameIce : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // 얼음이 그릇에 충돌했을 때 함수
@@ -63,13 +67,30 @@ public class MiniGameIce : MonoBehaviour
         // 얼음이 모두(10개) 충돌하면
         if (count == 3)
         {
-            // 게임 종료!
-            Debug.Log("게임종료!");
-            // 게임 화면 일시정지
-           // PauseGame();
-            // UI 창 실행
-            StartCoroutine(OnPanel());
+            if (PlayerCustomProperties.ContainsKey(miniGameIceKey))
+            {
+                PlayerCustomProperties[miniGameIceKey] = true;
+            }
+            else
+            {
+                PlayerCustomProperties.Add(miniGameIceKey, count);
+            }
+
+            PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
+
+            OnGameEnd();
         }
+
+    }
+
+    public void OnGameEnd()
+    {
+        // 게임 종료!
+        Debug.Log("게임종료!");
+        // 게임 화면 일시정지
+        // PauseGame();
+        // UI 창 실행
+        StartCoroutine(OnPanel());
     }
 
     // 게임 종료 & 결과 UI 창 나오는 함수
