@@ -8,6 +8,8 @@ public class Fruit : MonoBehaviour
     public GameObject sliced;
     public ParticleSystem brokeParticle;
 
+    public int points = 1;
+
     private void Awake()
     {
         brokeParticle = GetComponentInChildren<ParticleSystem>();
@@ -17,7 +19,7 @@ public class Fruit : MonoBehaviour
     {
         if (other.CompareTag("Sword"))
         {
-            FindObjectOfType<MiniGameManager>().IncreaseScore();
+            MiniGameManager.Instance.IncreaseScore(points);
 
             whole.SetActive(false);
             sliced.SetActive(true);

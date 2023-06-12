@@ -21,6 +21,11 @@ public class MiniGameIce : MonoBehaviour
     public GameObject resultPanel;
     public GameObject itemPanel;
 
+    // start 체크
+    public bool isstart = false;
+
+    public GameObject game;
+
     private ExitGames.Client.Photon.Hashtable PlayerCustomProperties = new ExitGames.Client.Photon.Hashtable();
     private string miniGameIceKey = "MiniGameIce";
 
@@ -33,6 +38,7 @@ public class MiniGameIce : MonoBehaviour
         {
             Instance = this;
         }
+
     }
 
     // Start is called before the first frame update
@@ -41,7 +47,7 @@ public class MiniGameIce : MonoBehaviour
         gameOverPanel.SetActive(false);
         resultPanel.SetActive(false);
         itemPanel.SetActive(false);
-        IsPause = false;
+        //IsPause = false;
         //audio = GetComponent<AudioSource>();
     }
 
@@ -54,6 +60,7 @@ public class MiniGameIce : MonoBehaviour
     // 얼음이 그릇에 충돌했을 때 함수
     private void OnTriggerEnter(Collider other)
     {
+
         Ice ice = other.GetComponent<Ice>();
         if (ice.isture)
         {
@@ -106,18 +113,16 @@ public class MiniGameIce : MonoBehaviour
         itemPanel.SetActive(true);
     }
 
-    // 시간 멈춤 => 게임끝나면 동작일시정지하고 UI창만 나오게끔...
-    void PauseGame()
-    {
-        if (IsPause == false)
-        {
-            Time.timeScale = 0;
-            IsPause = true;
-            return;
-        }
-    }
-
-
+    //// 시간 멈춤 => 게임끝나면 동작일시정지하고 UI창만 나오게끔...
+    //void PauseGame()
+    //{
+    //    if (IsPause == false)
+    //    {
+    //        Time.timeScale = 0;
+    //        IsPause = true;
+    //        return;
+    //    }
+    //}
 
     // 아이템창 끄기
     public void OnClickItemClose()
@@ -125,4 +130,5 @@ public class MiniGameIce : MonoBehaviour
         itemPanel.SetActive(false);
         Debug.Log("메인씬으로 쭈고");
     }
+
 }

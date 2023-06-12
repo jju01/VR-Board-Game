@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class FruiteSpawner : MonoBehaviour
 {
+    // 싱글톤으로 관리
     public static FruiteSpawner Instance;
 
+    // 스폰구역
     private Collider spawnArea;
 
+    // 과일 list 
     public GameObject[] fruitPrefabs;
+
+    // 폭탄
+    public GameObject bombPrefabs;
+
+    [Range(0f, 1f)]
+    public float bombChance = 0.05f;
 
     // 과일 스폰 최소 최대 시간
     public float minSpawnDelay = 0.25f;
@@ -31,9 +40,9 @@ public class FruiteSpawner : MonoBehaviour
         spawnArea = GetComponent<Collider>();
     }
 
-    private void OnEnable()
+    void Start()
     {
-        StartCoroutine(Spawn());
+        //StartCoroutine(Spawn());
     }
 
     private void OnDisable()
@@ -41,16 +50,24 @@ public class FruiteSpawner : MonoBehaviour
         StopAllCoroutines();
     }
 
-    private IEnumerator Spawn()
+    public void StartFruit()
     {
-        // 시작하기 전 지연 시간
-        yield return new WaitForSeconds(2f);
+        StartCoroutine(Spawn());
+    }
 
+    public IEnumerator Spawn()
+    {
         // 활성화되어있는 동안 반복
-        while(enabled)
+        while (enabled)
         {
             // 랜덤 과일 생성
             GameObject prefab = fruitPrefabs[Random.Range(0, fruitPrefabs.Length)];
+
+            // 랜덤 폭탄 생성
+            if (Random.value < bombChance)
+            {
+                prefab = bombPrefabs;
+            }
 
             // 과일 스폰 위치 생성
             Vector3 position = new Vector3();
@@ -61,9 +78,11 @@ public class FruiteSpawner : MonoBehaviour
             // 과일 랜덤 각도
             Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(minAngle, maxAngle));
 
+            // 맥스라이프 시간 뒤 삭제
             GameObject fruit = Instantiate(prefab, position, rotation);
             Destroy(fruit, maxLifetime);
 
+            // 랜덤 힘으로 올라옴
             float force = Random.Range(minForce, maxForce);
             fruit.GetComponent<Rigidbody>().AddForce(fruit.transform.up * force, ForceMode.Impulse);
 
@@ -71,3 +90,4 @@ public class FruiteSpawner : MonoBehaviour
         }
     }
 }
+

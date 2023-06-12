@@ -107,7 +107,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             idx = Random.Range(1, 5);
         }
 
-
         // Á¢±Ù
         // PhotonNetwork.CurrentRoom.CustomProperties
 

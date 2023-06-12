@@ -44,7 +44,7 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
 
         // 룸 옵션 정의
         RoomOptions ro = new RoomOptions();
-        ro.MaxPlayers = 4;      // 최대 접속자 수
+        ro.MaxPlayers = 2;      // 최대 접속자 수
         ro.IsOpen = true;       // 룸 오픈 여부
         ro.IsVisible = true;    // 로비에서 룸 목록에 노출 시킬지 여부    
 
@@ -65,9 +65,36 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"룸 입장 = {PhotonNetwork.InRoom}");
 
+        if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            Debug.Log("모두 참가 완료");
+
+            Invoke("StartGame", 3f);
+        }
     }
 
-    // 게임 종료되는 정보 가져오기
+    // 방에 들어온 사람 체크
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            Debug.Log("모두 참가 완료");
+
+            Invoke("StartGame", 3f);
+        }
+    }
+
+    // 3초 뒤 게임시작
+    private void StartGame()
+    {
+        MiniGameIce.Instance.isstart = true;
+        if (MiniGameIce.Instance.isstart == true)
+        {
+            MiniGameIce.Instance.game.SetActive(true);
+        }
+    }
+
+    // Ice MiniGame 종료되는 정보 가져오기
     public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);

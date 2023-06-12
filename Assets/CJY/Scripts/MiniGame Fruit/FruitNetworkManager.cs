@@ -7,9 +7,18 @@ using TMPro;
 
 public class FruitNetworkManager : MonoBehaviourPunCallbacks
 {
-    int time = 0;
-    public TextMeshProUGUI timerText;
     public PhotonView pv;
+
+    public static FruitNetworkManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+    private void Start()
+    {
+        Connect();
+    }
 
     // 포톤 서버 접속
     public void Connect()
@@ -44,7 +53,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
 
         // 룸 옵션 정의
         RoomOptions ro = new RoomOptions();
-        ro.MaxPlayers = 4;      // 최대 접속자 수
+        ro.MaxPlayers = 2;      // 최대 접속자 수
         ro.IsOpen = true;       // 룸 오픈 여부
         ro.IsVisible = true;    // 로비에서 룸 목록에 노출 시킬지 여부    
 
@@ -64,9 +73,32 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log($"룸 입장 = {PhotonNetwork.InRoom}");
+        if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            Debug.Log("모두 참가 완료");
+
+            Invoke("StartTimer", 3f);
+        }
     }
 
-    //// Timer 시작
+    // 방에 들어온 사람 체크 
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            Debug.Log("모두 참가 완료");
+
+            Invoke("StartTimer", 3f);
+        }
+    }
+
+    private void StartTimer()
+    {
+        MiniGameManager.Instance.isready = true;
+        FruiteSpawner.Instance.StartFruit();
+    }
+
+    ////Timer 시작
     //void StartTimer()
     //{
     //    if (PhotonNetwork.IsMasterClient)
@@ -81,14 +113,15 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     //{
     //    if (time > 0)
     //    {
-    //        time -= 1;
+    //        time -= Time.deltaTime;
     //    }
-    //    else
+    //    else if (time <= 0)
     //    {
-    //        Debug.Log("타이머 끝");
+    //        Debug.Log("게임 끝");
     //        yield break;
     //    }
-    //    // 1초 마다 방 모두에게 전달
+
+    ////    1초 마다 방 모두에게 전달
     //    pv.RPC("ShowTimer", RpcTarget.All, time);
     //    yield return new WaitForSeconds(1);
     //    StartCoroutine(TimerCoroution());
@@ -98,8 +131,17 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     //void ShowTimer(int number)
     //{
     //    timerText.text = number.ToString();
-   // }
+    //}
+
 
     // 과일 게임 정보 가져오기
+    public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
 
+        if (changedProps.ContainsKey($"MiniGameFruit"))
+        {
+            MiniGameManager.Instance.OnGameEnd();
+        }
+    }
 }

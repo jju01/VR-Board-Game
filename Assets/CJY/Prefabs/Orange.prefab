@@ -137,8 +137,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6083479067101453385}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.46323663, w: 0.8862347}
+  m_LocalPosition: {x: 0.13760488, y: 0.10532644, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -146,7 +146,7 @@ Transform:
   - {fileID: 8767996768260402030}
   m_Father: {fileID: 6083479067600677054}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 55.192}
 --- !u!1 &6083479067600677055
 GameObject:
   m_ObjectHideFlags: 0
@@ -5282,6 +5282,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: dfa54ccaf5a78e84cbbbb2773758395c, type: 3}
       propertyPath: m_Name
       value: Orenge
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dfa54ccaf5a78e84cbbbb2773758395c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfa54ccaf5a78e84cbbbb2773758395c, type: 3}
