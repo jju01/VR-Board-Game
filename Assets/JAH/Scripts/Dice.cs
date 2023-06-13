@@ -1,111 +1,138 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using Random = UnityEngine.Random;
 
-// ¿ªÇÒ 1 : Ä«µå ¼±ÅÃ ÈÄ 1ÃÊ µÚ ÁÖ»çÀ§(ÀÚ½Ä¿ÀºêÁ§Æ® "Basic Model") È°¼ºÈ­ 
+// ì—­í•  1: ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦°ë‹¤
+// ì—­í•  2: ì£¼ì‚¬ìœ„ ìˆ˜ë§Œí¼ Playerë¥¼ ì´ë™ì‹œí‚¨ë‹¤ (IceCube ìŠ¤í¬ë¦½íŠ¸)
 
 public class Dice : MonoBehaviour
 {
-    public GameObject Player;
+    public static Dice Instance { get; private set; }
 
-    // ÁÖ»çÀ§ 1~6 ¸®½ºÆ®
+    public GameObject player;
+    public GameObject ovrcamera;
+
+    // ì£¼ì‚¬ìœ„ ë¦¬ìŠ¤íŠ¸ (Basic Model, 1~6)
     public List<GameObject> DiceList = new List<GameObject>();
 
-    // ÁÖ»çÀ§ ¸®½ºÆ® ·£´ı ¹øÈ£
+    public IceCube firstCube;
+
+    // IceCube
+    public IceCube Icecube { get; set; }
+
+    // ì£¼ì‚¬ìœ„ ë²ˆí˜¸
     private int curDice;
 
-    private int curPos;
-    // IceCube
-    public List<GameObject> IceCubeList = new List<GameObject>();
+    // ì£¼ì‚¬ìœ„ ì´ë™
+    public bool isMoving  = false;
 
+    // ì£¼ì‚¬ìœ„ ì´ë™ ê°’(= curDice +1)
+    public int moveValue { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        RandomDice();
+        Instance = this;
+        Icecube = firstCube;
     }
 
-    // ¼ø¼­ Ä«µå ¼±ÅÃ ÈÄ 1ÃÊ µÚ ÁÖ»çÀ§ ³ªÅ¸³ª°Ô ÇÑ´Ù (°¢ Ä«µå ¹öÆ°¿¡ ¿¬°á)
+
+
+   // ìˆœì„œ ì¹´ë“œ í•œë²ˆ ë” ëˆ„ë¥´ë©´ ì‹¤í–‰ë¨(CardBtn ì´ë²¤íŠ¸)
     public void OrderNumber()
     { Invoke("DiceSetActive", 1); }
 
-    // ÁÖ»çÀ§(ÀÚ½Ä¿ÀºêÁ§Æ® "Basic Model") È°¼ºÈ­ ÇÔ¼ö
+
+    // ì£¼ì‚¬ìœ„(Basic Model í™œì„±í™”)
     public void DiceSetActive()
     {
-        // Basic Model È°¼ºÈ­
+
         transform.Find("Basic Model").gameObject.SetActive(true);
 
-        // A. VR Controller »ç¿ë ¸ğµåÀÎ °æ¿ì
-        if (GameManager.Instance.useVRController) { /* ³ªÁß¿¡ ÀÔ·Â..*/ }
-        // B.  VR Controller ¹Ì»ç¿ë ¸ğµåÀÎ °æ¿ì
+        // A. VR Controller ì‚¬ìš© ëª¨ë“œì¸ ê²½ìš° 
+        if (GameManager.Instance.useVRController)
+        { // OVRCamera ì•ì— ì£¼ì‚¬ìœ„ ìœ„ì¹˜ì‹œí‚´
+            transform.Find("Basic Model").gameObject.transform.position = ovrcamera.transform.position + (ovrcamera.transform.forward * 2);
+        }
+        // B.  VR Controller ë¯¸ì‚¬ìš© ëª¨ë“œì¸ ê²½ìš° 
         else
         {
-            // Player ¾Õ¿¡ À§Ä¡½ÃÅ²´Ù
-            transform.Find("Basic Model").gameObject.transform.position = Player.transform.position + (Player.transform.forward * 2);
+            // Player ì•ì— ì£¼ì‚¬ìœ„ ìœ„ì¹˜ì‹œí‚´
+            transform.Find("Basic Model").gameObject.transform.position = player.transform.position + (player.transform.forward * 2);
         }
-
+ 
     }
 
-    // ÁÖ»çÀ§(Basic Model)À» Å¬¸¯(Ray ¸¦ ½î±â)ÇÏ¸é ·£´ıÀ¸·Î ÁÖ»çÀ§ ¸®½ºÆ®1~6 Áß ÇÏ³ª°¡ È°¼ºÈ­ 
+    // 1. ì£¼ì‚¬ìœ„ ë‚˜ì™”ì„ ë•Œ Rayë¥¼ ì˜ê³  ,
+    // 2. ì£¼ì‚¬ìœ„ ê²°ê³¼ê°€ ë‚˜ì˜¤ê³ 
+    // 3. ì£¼ì‚¬ìœ„ ìˆ˜ë§Œí¼ ì›€ì§ì´ê²Œ í•˜ëŠ” í•¨ìˆ˜
     public void RandomDice()
     {
-        // A. VR Controller »ç¿ë ¸ğµåÀÎ °æ¿ì
-        if (GameManager.Instance.useVRController) { /* ³ªÁß¿¡ ÀÔ·Â..*/ }
-        // B.  VR Controller ¹Ì»ç¿ë ¸ğµåÀÎ °æ¿ì
-        else
-        {
-            // ¸¶¿ì½º¸¦ ´­·¶À» ¶§
-            if (Input.GetButtonDown("Fire1"))
-            {
-                // Ray (Mouse Point°¡ À§Ä¡ÇÑ °÷À¸·Î Ray¸¦ ½ğ´Ù.)
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                // RaycasyHit
-                RaycastHit hitInfo;
 
-                if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity))
-                {
-                    // ÁÖ»çÀ§ Basic ModelÀ» Å¬¸¯ÇÏ¸é
-                    if (hitInfo.transform.name == "Basic Model")
-                    {
-                        // 1. Basic Model ºñÈ°¼ºÈ­
-                        hitInfo.collider.gameObject.SetActive(false);
-                        // 2. ÁÖ»çÀ§ ¸®½ºÆ® 1~6 ·£´ıÀ¸·Î ÇÏ³ª È°¼ºÈ­
+              
+                        // 2. 1~6 ì£¼ì‚¬ìœ„ ëœë¤ í™œì„±í™”
                         curDice = Random.Range(0, DiceList.Count);
-                        DiceList[curDice].SetActive(true);
-                        // 3. ¼±ÅÃµÈ ÁÖ»çÀ§ Player ¾ÕÀ¸·Î À§Ä¡
-                        DiceList[curDice].gameObject.transform.position = Player.transform.position + (Player.transform.forward * 2);
-                        // 4. 1ÃÊ µÚ ÆÄÆ¼Å¬ »ı¼º + ¼±ÅÃµÈ ÁÖ»çÀ§ »ç¶óÁü
-                        //DiceList[curDice].gameObject.SetActive(false);
-                        Invoke("RandomDiceList", 1f);
-                        // 5. 1ÃÊ µÚ ¼ıÀÚ UI + ÆÄÆ¼Å¬ »ı¼º 
-                        // 6. 1ÃÊµÚ ¼ıÀÚ UI + ÆÄÆ¼Å¬ »ç¶óÁü
-                        // 7. Player¸¦ ÁÖ»çÀ§ ¼ıÀÚ¸¸Å­ ÀÌµ¿½ÃÅ²´Ù
-                        Invoke("PlayerMove", 2f);
-                    }
+                        moveValue = curDice+1;
 
-                }
-            }
-        }
+                        DiceList[curDice].SetActive(true);
+                        
+                        // 3. Player ì•ì— ìœ„ì¹˜ì‹œí‚´ 
+                        DiceList[curDice].gameObject.transform.position = player.transform.position + (player.transform.forward * 2);
+                        // 4. 1ì´ˆ ë’¤ ëœë¤ ì£¼ì‚¬ìœ„ ë¹„í™œì„±í™” 
+                        Invoke("RandomDiceList", 1f);
+                        // 5. 1ì´ˆ ë’¤ ìˆ«ì UI  + íŒŒí‹°í´ + íš¨ê³¼ìŒ ì¬ìƒ
+                        // 6. 1ì´ˆ ë’¤ ìˆ«ì UI  + íŒŒí‹°í´ + íš¨ê³¼ìŒ ë¹„í™œì„±í™”
+
+                        // 7. 2ì´ˆ ë’¤ Playerë¥¼ ì£¼ì‚¬ìœ„ ìˆ˜ë§Œí¼ ì´ë™ì‹œí‚´ 
+                        Invoke("MoveToNext", 2f);
+
+
 
         
         
     }
-    // ·£´ı ¼±ÅÃµÈ ÁÖ»çÀ§ »ç¶óÁö°Ô ÇÔ
+    // ëœë¤ ì£¼ì‚¬ìœ„ ë¹„í™œì„±í™” 
     private void RandomDiceList()
     {
         DiceList[curDice].gameObject.SetActive(false);
     }
 
-   // Player¸¦ ÁÖ»çÀ§ ¼ıÀÚ¸¸Å­ ÀÌµ¿½ÃÅ²´Ù
-   private void PlayerMove()
+   // Playerë¥¼ ì£¼ì‚¬ìœ„ ìˆ«ìë§Œí¼ ì´ë™
+   private void MoveToNext()
     {
-        curPos += curDice;
-        IceCubeList[curPos].gameObject.GetComponent<IceCube>().IceCubeMove();
-        //for (int i = 0; i < curDice; i++)
-        //{
-        //      IceCubeList[i].gameObject.GetComponent<IceCube>().IceCubeMove();
-        //}
+        if (isMoving || (moveValue <= 0))
+            return;
 
-        print(curPos);
+        isMoving = true;
+        Icecube.GetNext(MoveTo);
     }
-}
+
+
+    public void MoveTo(IceCube target)
+    {
+        Icecube = target;
+        Vector3 goalPos = target.transform.position;
+        goalPos.y = player.transform.position.y;
+
+        // playerë¥¼ ì´ë™ì‹œí‚¨ë‹¤
+        player.transform.DOMove(goalPos, 0.8f).OnComplete(MoveDone);
+
+    }
+
+    private void MoveDone()
+    {
+        moveValue--;
+        isMoving = false;
+
+        if (moveValue > 0)
+            MoveToNext();
+        else
+            DiceSetActive();
+
+
+    }
+    }
+
+

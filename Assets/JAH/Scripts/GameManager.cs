@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // VR Controller »ç¿ë ¿©ºÎ
+    // VR Controller ì‚¬ìš© ì—¬ë¶€
     public bool useVRController = false;
-    // ½Ì±ÛÅæ ÁØºñ
+    // ì‹±ê¸€í†¤ ì¤€ë¹„
     public static GameManager Instance;
 
     private void Awake()
     {
-        // ¸¸ÀÏ, ³ª ÀÚ½Å(=this)ÀÌ ºñ¾îÀÖ´Â »óÅÂ¶ó¸é
+        // ë§Œì¼, ë‚˜ ìì‹ (=this)ì´ ë¹„ì–´ìˆëŠ” ìƒíƒœë¼ë©´
         if (Instance == null)
         {
-            // Instance¿¡ ³ª ÀÚ½ÅÀ» ÇÒ´çÇÑ´Ù.
+            // Instanceì— ë‚˜ ìì‹ ì„ í• ë‹¹í•œë‹¤.
             Instance = this;
         }
     }
@@ -31,10 +31,10 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // ÀÚµ¿ VR Controller »ç¿ë¿©ºÎ Ã¼Å©
+    // ìë™ VR Controller ì‚¬ìš©ì—¬ë¶€ ì²´í¬
     private void AutoControllerSetting()
     {
-        if (GameObject.Find("Player"))
+        if (GameObject.Find("MainCamera"))
         {
             useVRController = false;
         }
