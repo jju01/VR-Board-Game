@@ -52,6 +52,7 @@ public class FruiteSpawner : MonoBehaviour
 
     public void StartFruit()
     {
+        MiniGameManager.Instance.SetStartTime(Time.realtimeSinceStartup);
         StartCoroutine(Spawn());
     }
 
