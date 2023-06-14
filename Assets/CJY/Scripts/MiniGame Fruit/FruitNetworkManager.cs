@@ -73,6 +73,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log($"룸 입장 = {PhotonNetwork.InRoom}");
+        MiniGameManager.Instance.menuPanel.SetActive(true);
         if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
         {
             Debug.Log("모두 참가 완료");
@@ -84,6 +85,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     // 방에 들어온 사람 체크 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
+        MiniGameManager.Instance.menuPanel.SetActive(true);
         if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
         {
             Debug.Log("모두 참가 완료");
@@ -94,10 +96,10 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
 
     private void StartTimer()
     {
-
-
+        MiniGameManager.Instance.menuPanel.SetActive(false);
         MiniGameManager.Instance.isready = true;
         FruiteSpawner.Instance.StartFruit();
+        MiniGameManager.Instance.StartTimer();
     }
 
     ////Timer 시작
@@ -141,16 +143,14 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     {
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
 
+
+        // 게임끝나는 정보 확인 후 게임 종료 
         if (changedProps.ContainsKey($"MiniGameFruit"))
         {
             MiniGameManager.Instance.OnGameEnd();
         }
 
-        if(changedProps.ContainsKey($"MiniGameFruitScore"))
-        {
-            // changedProps["MiniGameFruitScore"];
-        }
-
+        // 점수정보 가지고 있는지 다 확인 후 조건 충족하면 UI 창 나오기
         if (changedProps.ContainsKey($"MiniGameFruitScore"))
         {
             int scoreCount = 0;

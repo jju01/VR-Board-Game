@@ -15,7 +15,8 @@ public class MiniGameManager : MonoBehaviour
     public TextMeshProUGUI timerText;
 
     [Space]
-    // 게임종료 패널
+    // 게임 패널
+    public GameObject menuPanel;
     public GameObject gameOverPanel;
     public GameObject resultPanel;
     public GameObject itemPanel;
@@ -89,10 +90,11 @@ public class MiniGameManager : MonoBehaviour
             if (time < timer)
             {
                 //timer -= Time.deltaTime;
-                timerText.text = $"{timer-time}";
+                timerText.text = $"{timer - time}";
             }
             else
             {
+                // 타이머 동기화
                 if (PlayerCustomProperties.ContainsKey(miniGameFruitKey))
                 {
                     PlayerCustomProperties[miniGameFruitKey] = true;
@@ -102,6 +104,7 @@ public class MiniGameManager : MonoBehaviour
                     PlayerCustomProperties.Add(miniGameFruitKey, timer);
                 }
 
+                // 점수 동기화
                 if (PlayerCustomProperties.ContainsKey(miniGameFruitScore))
                 {
                     PlayerCustomProperties[miniGameFruitScore] = true;

@@ -8,6 +8,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    // ½Ì±ÛÅæÀ¸·Î °ü¸®
     public static NetworkManager Instance;
 
     public GameObject myPlayer;
