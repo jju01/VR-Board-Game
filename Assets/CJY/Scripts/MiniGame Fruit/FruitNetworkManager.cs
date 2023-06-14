@@ -94,6 +94,8 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
 
     private void StartTimer()
     {
+
+
         MiniGameManager.Instance.isready = true;
         FruiteSpawner.Instance.StartFruit();
     }
@@ -142,6 +144,29 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
         if (changedProps.ContainsKey($"MiniGameFruit"))
         {
             MiniGameManager.Instance.OnGameEnd();
+        }
+
+        if(changedProps.ContainsKey($"MiniGameFruitScore"))
+        {
+            // changedProps["MiniGameFruitScore"];
+        }
+
+        if (changedProps.ContainsKey($"MiniGameFruitScore"))
+        {
+            int scoreCount = 0;
+            foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
+            {
+                if (p.CustomProperties.ContainsKey("MiniGameFruitScore"))
+                    scoreCount++;
+                print("올라감");
+            }
+
+            if (scoreCount == 2)
+            {
+                Debug.Log("UI ");
+                // 점수 띄우기
+
+            }
         }
     }
 }

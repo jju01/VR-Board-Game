@@ -25,6 +25,9 @@ public class MiniGameManager : MonoBehaviour
 
     private ExitGames.Client.Photon.Hashtable PlayerCustomProperties = new ExitGames.Client.Photon.Hashtable();
     private string miniGameFruitKey = "MiniGameFruit";
+    private string miniGameFruitScore = "MiniGameFruitScore";
+    float startTime = 0;
+
 
     // 싱글톤으로 만들어서 관리
     public static MiniGameManager Instance;
@@ -45,9 +48,19 @@ public class MiniGameManager : MonoBehaviour
         itemPanel.SetActive(false);
     }
 
+    public void SetStartTime(float startTime)
+    {
+        this.startTime = startTime;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (startTime < 1)
+        {
+            return;
+        }
+
         StartTimer();
     }
 
@@ -71,12 +84,14 @@ public class MiniGameManager : MonoBehaviour
     {
         if (isready == true)
         {
-            if (timer > 0)
+            float time = Time.realtimeSinceStartup - startTime;
+            time = time / 1000;
+            if (time < timer)
             {
-                timer -= Time.deltaTime;
-                timerText.text = timer.ToString();
+                //timer -= Time.deltaTime;
+                timerText.text = $"{timer-time}";
             }
-            else if (timer <= 0)
+            else
             {
                 if (PlayerCustomProperties.ContainsKey(miniGameFruitKey))
                 {
@@ -85,6 +100,15 @@ public class MiniGameManager : MonoBehaviour
                 else
                 {
                     PlayerCustomProperties.Add(miniGameFruitKey, timer);
+                }
+
+                if (PlayerCustomProperties.ContainsKey(miniGameFruitScore))
+                {
+                    PlayerCustomProperties[miniGameFruitScore] = true;
+                }
+                else
+                {
+                    PlayerCustomProperties.Add(miniGameFruitScore, score);
                 }
 
                 PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
@@ -105,6 +129,7 @@ public class MiniGameManager : MonoBehaviour
         StartCoroutine(OnPanel());
     }
 
+
     // 게임 종료 & 결과 UI 창 나오는 함수
     IEnumerator OnPanel()
     {
@@ -117,5 +142,4 @@ public class MiniGameManager : MonoBehaviour
         resultPanel.SetActive(false);
         itemPanel.SetActive(true);
     }
-
 }
