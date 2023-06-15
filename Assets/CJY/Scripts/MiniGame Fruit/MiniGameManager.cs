@@ -70,6 +70,7 @@ public class MiniGameManager : MonoBehaviour
     {
         score += amount;
         scoreText.text = score.ToString();
+        SaveScore();
     }
 
     // 점수 감소
@@ -78,6 +79,7 @@ public class MiniGameManager : MonoBehaviour
         score -= amount;
         Debug.Log("점수 마이너스");
         scoreText.text = score.ToString();
+        SaveScore();
     }
 
     // 타이머 함수 (30초 끝나면 종료)
@@ -86,32 +88,22 @@ public class MiniGameManager : MonoBehaviour
         if (isready == true)
         {
             float time = Time.realtimeSinceStartup - startTime;
-            time = time / 1000;
+            
             if (time < timer)
-            {
-                //timer -= Time.deltaTime;
-                timerText.text = $"{timer - time}";
+            {                
+                timerText.text = Mathf.Round(timer - time).ToString();
             }
             else
             {
+                timerText.text = "0";
                 // 타이머 동기화
                 if (PlayerCustomProperties.ContainsKey(miniGameFruitKey))
                 {
-                    PlayerCustomProperties[miniGameFruitKey] = true;
+                    PlayerCustomProperties[miniGameFruitKey] = timer;
                 }
                 else
                 {
                     PlayerCustomProperties.Add(miniGameFruitKey, timer);
-                }
-
-                // 점수 동기화
-                if (PlayerCustomProperties.ContainsKey(miniGameFruitScore))
-                {
-                    PlayerCustomProperties[miniGameFruitScore] = true;
-                }
-                else
-                {
-                    PlayerCustomProperties.Add(miniGameFruitScore, score);
                 }
 
                 PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
@@ -119,8 +111,23 @@ public class MiniGameManager : MonoBehaviour
                 Time.timeScale = 0;
                 OnGameEnd();
             }
-            timerText.text = Mathf.Round(timer).ToString();
+            
         }
+    }
+
+    void SaveScore()
+    {
+        // 점수 동기화
+        if (PlayerCustomProperties.ContainsKey(miniGameFruitScore))
+        {
+            PlayerCustomProperties[miniGameFruitScore] = score;
+        }
+        else
+        {
+            PlayerCustomProperties.Add(miniGameFruitScore, score);
+        }
+
+        PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
     }
 
     // 게임 종료 함수 
