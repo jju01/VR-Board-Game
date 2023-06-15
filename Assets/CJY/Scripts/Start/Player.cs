@@ -47,6 +47,13 @@ public class Player : MonoBehaviourPunCallbacks
     // 레디하면 옆에 체크 표시 뜨는 함수
     public void ReadyChecktrue()
     {
+        pv.RPC("ReadyIcorn", RpcTarget.All);
+    }
+    
+
+    [PunRPC]
+    public void ReadyIcorn()
+    {
         readycheck.SetActive(true);
     }
 }

@@ -38,7 +38,9 @@ public class Ready : MonoBehaviour
 
     public void OnClickReady()
     {
-        Player.Instance.ReadyChecktrue();
+        GameObject palyer = NetworkManager.Instance.myPlayer;
+        palyer.GetComponent<Player>().ReadyChecktrue();
+
         SetReady();
     }
 }

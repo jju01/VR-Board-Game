@@ -31,6 +31,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // 포톤 서버 접속
     public void Connect()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -139,6 +140,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             {
                 if (p.CustomProperties.ContainsKey("PlayerReady"))
                     readyCount++;
+               // Player.Instance.ReadyChecktrue();
                 print("올라감");
             }
 

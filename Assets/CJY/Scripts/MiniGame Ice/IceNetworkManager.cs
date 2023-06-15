@@ -8,7 +8,13 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
 {
     private void Start()
     {
-        Conect();
+        // if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            Debug.Log("모두 참가 완료");
+
+            Invoke("StartGame", 3f);
+        }
+        //Conect();
     }
 
     // 포톤 서버 접속
@@ -101,6 +107,7 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
 
         if (changedProps.ContainsKey($"MiniGameIce"))
         {
+            //targetPlayer.NickName
             MiniGameIce.Instance.OnGameEnd();
         }
     }
