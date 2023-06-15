@@ -28,5 +28,7 @@ public class CameraControllor : MonoBehaviour
 
         // 2. Target 으로부터 Offset만큼 떨어진 위치로 Camera 이동
         transform.position = target.transform.position + offset;
+        // 3, Target의 방향으로 회전
+        transform.rotation = target.transform.rotation;
     }
 }

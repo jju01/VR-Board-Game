@@ -24,6 +24,8 @@ public class Items : MonoBehaviour
         // Player와 Item이 부딪혔을 때
         if (other.tag == "Player" || other.name.Contains("Player"))
         {
+           if(Dice.Instance.moveValue <=1 )
+            {
 
             // ItemManager 데이터 가져온다
             ItemManager IM = FindObjectOfType<ItemManager>();
@@ -48,6 +50,8 @@ public class Items : MonoBehaviour
             // 만일 GItem UI 4개 다 활성화 되면 게임 종료, Ending Scene으로 전환
             if (IM.UIItems[0].activeSelf == true && IM.UIItems[1].activeSelf == true &&
                 IM.UIItems[2].activeSelf == true && IM.UIItems[3].activeSelf == true ) print("GameClear");
+            }
+            
         }
     }
 }

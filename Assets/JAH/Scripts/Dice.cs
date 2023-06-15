@@ -118,7 +118,7 @@ public class Dice : MonoBehaviour
 
         // player를 이동시킨다
         player.transform.DOMove(goalPos, 0.8f).OnComplete(MoveDone);
-
+        player.transform.DOLookAt(goalPos, 0.5f);
     }
 
     private void MoveDone()

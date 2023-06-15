@@ -63,7 +63,7 @@ public class GraphicCast : BaseInputModule
 
         lr.enabled = false;
         // 마커 활성화
-        marker.gameObject.SetActive(false);
+        marker.gameObject.SetActive(true);
 
 
         // CrossHair의 원래 크기 저장
