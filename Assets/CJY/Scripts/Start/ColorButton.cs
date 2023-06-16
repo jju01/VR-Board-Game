@@ -8,7 +8,8 @@ public class ColorButton : MonoBehaviour
     Button myBtn;
     Image img;
     UiCustomManager uiCustom;
-    
+
+    public int textureidx;
 
     // Start is called before the first frame update
     void Start()
@@ -20,10 +21,10 @@ public class ColorButton : MonoBehaviour
 
         uiCustom = FindObjectOfType<UiCustomManager>();
     }
-     
+
     public void ChangeColor()
     {
         GameObject palyer = NetworkManager.Instance.myPlayer;
-        palyer.GetComponent<Player>().SetColor(img.color);
+        palyer.GetComponent<Player>().SetColor(textureidx);
     }
 }

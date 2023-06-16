@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
 public class ScoreManager : MonoBehaviour
@@ -90,6 +91,18 @@ public class ScoreManager : MonoBehaviour
 
                 nameText[idx].text = p.NickName;
                 scoreText[idx].text = score.ToString();
+                // 우승자 정보 저장
+                if (idx == 0)
+                {
+                    if (p.IsLocal)
+                    {
+                        Hashtable CustomProperties = new Hashtable();
+
+                        CustomProperties.Add($"winner1", p.NickName);
+
+                        PhotonNetwork.SetPlayerCustomProperties(CustomProperties);
+                    }
+                }
             }
         }
     }

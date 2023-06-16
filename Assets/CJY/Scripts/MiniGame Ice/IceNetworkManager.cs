@@ -109,6 +109,9 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
         {
             //targetPlayer.NickName
             MiniGameIce.Instance.OnGameEnd();
+
+        // 이름 불러오기 함수 실행
         }
+        
     }
 }
