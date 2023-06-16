@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Photon.Pun;
 using Random = UnityEngine.Random;
 
 // 역할 1: 주사위를 굴린다
@@ -10,60 +11,70 @@ using Random = UnityEngine.Random;
 
 public class Dice : MonoBehaviour
 {
-    public static Dice Instance { get; private set; }
+    private GameObject player;
 
-    public GameObject player;
-    public GameObject ovrcamera;
-
+    public GameObject baseDice;
     // 주사위 리스트 (Basic Model, 1~6)
     public List<GameObject> DiceList = new List<GameObject>();
-
-    public IceCube firstCube;
 
     // IceCube
     public IceCube Icecube { get; set; }
 
     // 주사위 번호
     private int curDice;
+    public int moveValue;
 
     // 주사위 이동
     public bool isMoving  = false;
+    public bool isRolling  = false;
+    
+    private PhotonView pv;
 
-    // 주사위 이동 값(= curDice +1)
-    public int moveValue { get; private set; }
+    private Tweener rotX;
+    private Tweener rotY;
+    private Tweener rotZ;
 
-    private void Awake()
+    // 주사위 결과 나올 때 효과음
+    private AudioSource effectaudio;
+    // >> 파티클
+    public GameObject effectparticle;
+
+    private void Start()
     {
-        Instance = this;
-        Icecube = firstCube;
+        pv = GetComponent<PhotonView>();
+        player = GameManager.Instance.MyPlayer;
+
+        effectaudio = GetComponent<AudioSource>();
     }
 
-
-
-   // 순서 카드 한번 더 누르면 실행됨(CardBtn 이벤트)
-    public void OrderNumber()
-    { Invoke("DiceSetActive", 1); }
-
+    // 주사위 이동 값(= curDice +1)
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            RandomDice();
+    }
 
     // 주사위(Basic Model 활성화)
     public void DiceSetActive()
     {
+        if(pv.IsMine == false)
+            return;
 
-        transform.Find("Basic Model").gameObject.SetActive(true);
+        isRolling = false;
+        
+        Transform camTr = GameManager.Instance.cameraObj.transform;
+        transform.position = camTr.position + (camTr.forward * 2);
 
-        // VR Controller 사용 모드인 경우 
-        if (GameManager.Instance.useVRController)
-         { // OVRCamera(CenterEyeAnchor) 앞에 주사위 위치시킴
-           transform.Find("Basic Model").gameObject.transform.position = ovrcamera.transform.position + (ovrcamera.transform.forward * 2);
-         }
-        else
-        {
-            // Player 앞에 주사위 위치시킴
-            transform.Find("Basic Model").gameObject.transform.position = player.transform.position + (player.transform.forward * 2);
-        }
-            
-
- 
+        RandomDiceList();
+        
+        baseDice.SetActive(true);
+        
+        transform.DOScale(Vector3.one, 0.4f);
+        transform.DOMove(transform.position, 0.4f).ChangeStartValue(transform.position + Vector3.down * 1.5f);
+        
+        rotX = transform.DOBlendableRotateBy(Vector3.right * 80, 0.7f).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
+        rotY =transform.DOBlendableRotateBy(Vector3.up * 360, 1.7f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
+        rotZ =transform.DOBlendableRotateBy(Vector3.forward * 360, 1.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
     }
 
     // 1. 주사위 나왔을 때 Ray를 쏘고 ,
@@ -71,47 +82,53 @@ public class Dice : MonoBehaviour
     // 3. 주사위 수만큼 움직이게 하는 함수
     public void RandomDice()
     {
-
+        if(pv.IsMine == false)
+            return;
               
-                        // 2. 1~6 주사위 랜덤 활성화
-                        curDice = Random.Range(0, DiceList.Count);
-                        moveValue = curDice+1;
-
-                        DiceList[curDice].SetActive(true);
-
-                        // VR Controller 사용 모드인 경우 
-                        if (GameManager.Instance.useVRController)
-                          { // OVRCamera(CenterEyeAnchor) 앞에 주사위 위치시킴
-                             DiceList[curDice].gameObject.transform.position = ovrcamera.transform.position + (ovrcamera.transform.forward * 2);
-                          }
-                        else // VR Controller 미사용 모드인 경우
-                        {
-                            //  Player 앞에 위치시킴 
-                            DiceList[curDice].gameObject.transform.position = player.transform.position + (player.transform.forward * 2);
-                        }
-                       
-                        // 4. 1초 뒤 랜덤 주사위 비활성화 
-                        Invoke("RandomDiceList", 1f);
-                        // 5. 1초 뒤 숫자 UI  + 파티클 + 효과음 재생
-                        // 6. 1초 뒤 숫자 UI  + 파티클 + 효과음 비활성화
-
-                        // 7. 2초 뒤 Player를 주사위 수만큼 이동시킴 
-                        Invoke("MoveToNext", 2f);
-
-
-
+        if(GameManager.Instance.IsMyTurn == false)
+            return;
         
+        if(isRolling)
+            return;
         
+        isRolling = true;
+        
+        // 2. 1~6 주사위 랜덤 활성화
+        curDice = Random.Range(0, DiceList.Count);
+        moveValue = curDice+1;
+
+        rotX.Pause();
+        rotY.Pause();
+        rotZ.Pause();
+        
+        transform.DOPunchScale(Vector3.one * 0.5f, 0.4f, 1);
+        transform.DORotate(Vector3.zero, 0.5f);
+        transform.DOScale(Vector3.zero, 0.2f).SetDelay(1.5f);
+
+        pv.RPC("SetDice", RpcTarget.All, curDice);
+        
+        // 3. 1초 뒤 숫자 UI  + 파티클 + 효과음 재생
+        // 4. 1초 뒤 숫자 UI  + 파티클 + 효과음 비활성화
+
+        // 5. 2초 뒤 Player를 주사위 수만큼 이동시킴 
+        Invoke("MoveToNext", 2.5f);
     }
+    
     // 랜덤 주사위 비활성화 
     private void RandomDiceList()
     {
-        DiceList[curDice].gameObject.SetActive(false);
+        if(pv.IsMine == false)
+            return;
+        
+        pv.RPC("ResetDice", RpcTarget.All, curDice);
     }
 
    // Player를 주사위 숫자만큼 이동
    private void MoveToNext()
     {
+        if(pv.IsMine == false)
+            return;
+        
         if (isMoving || (moveValue <= 0))
             return;
 
@@ -122,6 +139,9 @@ public class Dice : MonoBehaviour
 
     public void MoveTo(IceCube target)
     {
+        if(pv.IsMine == false)
+            return;
+        
         Icecube = target;
         Vector3 goalPos = target.transform.position;
         goalPos.y = player.transform.position.y;
@@ -133,16 +153,41 @@ public class Dice : MonoBehaviour
 
     private void MoveDone()
     {
+        if(pv.IsMine == false)
+            return;
+        
         moveValue--;
         isMoving = false;
 
         if (moveValue > 0)
             MoveToNext();
         else
-            DiceSetActive();
-
-
+            GameManager.Instance.NextTurn();
     }
+
+    
+    [PunRPC]
+    public void SetDice(int idx)
+    {
+        baseDice.gameObject.SetActive(false);
+        DiceList[idx].gameObject.SetActive(true);
+
+        // 주사위 결과 나올 때 파티클,
+        effectparticle.SetActive(true);
+        
+        // 효과음 활성화
+        effectaudio.Stop();
+        effectaudio.Play();
+        
     }
+    
+    [PunRPC]
+    public void ResetDice(int idx)
+    {
+        effectparticle.SetActive(false);
+        baseDice.gameObject.SetActive(true);
+        DiceList[idx].gameObject.SetActive(false);
+    }
+}
 
 
