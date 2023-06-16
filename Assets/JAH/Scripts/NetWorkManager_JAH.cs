@@ -45,14 +45,14 @@ public class NetWorkManager_JAH : MonoBehaviourPunCallbacks
     }
 
 
-    PlayerScript FindPlayer()
-    {
-        foreach (GameObject Player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            if (Player.GetPhotonView().IsMine) return Player.GetComponent<PlayerScript>();
-        }
-        return null;
-    }
+    //PlayerScript FindPlayer()
+    //{
+    //    foreach (GameObject Player in GameObject.FindGameObjectsWithTag("Player"))
+    //    {
+    //        if (Player.GetPhotonView().IsMine) return Player.GetComponent<PlayerScript>();
+    //    }
+    //    return null;
+    //}
 
     private void Update()
     {

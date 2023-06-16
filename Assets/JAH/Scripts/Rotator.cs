@@ -24,7 +24,7 @@ public class Rotator : MonoBehaviour
     {
         // 자기 자신을 임의의 속도(=speed)와 특정 방향(=direction)으로 회전시킨다.
         // Time.deltaTime (=frame단위가 아니라 초시간 기준으로 코드를 호출)
-        transform.Rotate(direction * speed * Time.deltaTime);
+        transform.M(direction * speed * Time.deltaTime);
 
     }
 }

@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     // 싱글톤 준비
     public static GameManager Instance;
 
+
+
     public GameObject guideUI;
     
     public GameObject cameraObj;
@@ -26,7 +28,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public int myOrder;
 
     public bool IsMyTurn = false;
-    
+
+
     private void Awake()
     {
         // 만일, 나 자신(=this)이 비어있는 상태라면
@@ -57,6 +60,19 @@ public class GameManager : MonoBehaviourPunCallbacks
             cameraObj = GameObject.Find("OVRCameraRig");
             useVRController = true;
         }
+    }
+
+    // 3인칭 카메라 시점으로 바뀐다
+    public void SetThirdPersonView(Transform thirdcam)
+    {
+        cameraObj.transform.SetParent(thirdcam);
+        cameraObj.transform.localPosition = Vector3.zero;
+        cameraObj.transform.localEulerAngles = Vector3.zero;
+    }
+    // 1인칭 Ovrcamera 시점으로 바뀐다
+    public void SetOVRCameraView()
+    {
+        MyPlayer.GetComponent<BoardGamePlayer>().SetCamera(cameraObj.transform);
     }
 
     private void CheckConnect()
