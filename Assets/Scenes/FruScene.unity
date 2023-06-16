@@ -1867,5 +1867,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7880749614422179637, guid: 399dc795529aa8f46929a38f3bec3932, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880749614422179639, guid: 399dc795529aa8f46929a38f3bec3932, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.131
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880749615394508063, guid: 399dc795529aa8f46929a38f3bec3932, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.744
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880749615620648309, guid: 399dc795529aa8f46929a38f3bec3932, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 56.68
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 399dc795529aa8f46929a38f3bec3932, type: 3}
