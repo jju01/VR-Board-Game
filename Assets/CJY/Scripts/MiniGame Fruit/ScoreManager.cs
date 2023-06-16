@@ -11,6 +11,7 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI[] scoreText;
     public TextMeshProUGUI[] nameText;
 
+    public List<int> scoreList;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +45,7 @@ public class ScoreManager : MonoBehaviour
         //    i++;
         //}
 
-        List<int> scoreList = new List<int>();
+        scoreList = new List<int>();
         foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
         {
             if (p.CustomProperties.ContainsKey("MiniGameFruitScore"))
@@ -63,7 +64,7 @@ public class ScoreManager : MonoBehaviour
             for (int j = i + 1; j < scoreList.Count; j++)
             {
                 // 최소값 비교
-                if (scoreList[min] > scoreList[j])
+                if (scoreList[min] < scoreList[j])
                 {
                     min = j;
                 }
@@ -84,6 +85,8 @@ public class ScoreManager : MonoBehaviour
             {
                 int score = (int)p.CustomProperties["MiniGameFruitScore"];
                 int idx = scoreList.IndexOf(score);
+
+                Debug.Log($"score : {score}      idx : {idx}");
 
                 nameText[idx].text = p.NickName;
                 scoreText[idx].text = score.ToString();
