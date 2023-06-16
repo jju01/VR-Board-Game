@@ -72,7 +72,7 @@ public class MiniGameIce : MonoBehaviour
         //FindObjectOfType<Ice>().OnTriggerEnter(other);
 
         // 얼음이 모두(10개) 충돌하면
-        if (count == 3)
+        if (count == 10)
         {
             if (PlayerCustomProperties.ContainsKey(miniGameIceKey))
             {

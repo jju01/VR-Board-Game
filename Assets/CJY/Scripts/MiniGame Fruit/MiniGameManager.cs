@@ -47,6 +47,8 @@ public class MiniGameManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         resultPanel.SetActive(false);
         itemPanel.SetActive(false);
+        // 처음점수(=0) 저장
+        SaveScore();
     }
 
     public void SetStartTime(float startTime)

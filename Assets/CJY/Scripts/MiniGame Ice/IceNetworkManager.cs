@@ -8,7 +8,7 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
 {
     private void Start()
     {
-        // if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
+        //if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
         {
             Debug.Log("모두 참가 완료");
 

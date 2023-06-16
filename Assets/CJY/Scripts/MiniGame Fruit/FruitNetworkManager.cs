@@ -17,10 +17,10 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
-        MiniGameManager.Instance.menuPanel.SetActive(true);
-        Invoke("StartTimer", 3f);
+        //MiniGameManager.Instance.menuPanel.SetActive(true);
+        //Invoke("StartTimer", 3f);
 
-        //Connect();
+        Connect();
     }
 
     // 포톤 서버 접속
