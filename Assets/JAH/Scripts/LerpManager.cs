@@ -21,6 +21,12 @@ public class LerpManager : MonoBehaviour
 
     private void Update()
     {
+        if(GameManager.Instance.MyPlayer == null)
+            return;
+
+        if (target == null)
+            target = GameManager.Instance.MyPlayer.transform;
+        
         FollowUI();
     }
 

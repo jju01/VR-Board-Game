@@ -17,7 +17,7 @@ MonoBehaviour:
     AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
-    AppVersion: 
+    AppVersion: 111
     UseNameServer: 1
     FixedRegion: 
     Server: 
@@ -29,19 +29,20 @@ MonoBehaviour:
     EnableLobbyStatistics: 0
     NetworkLogging: 1
   DevRegion: kr
-  PunLogging: 0
+  PunLogging: 2
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - ChangeColor
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
   - Fire
-  - RespawnSpaceship
-  - ChangeColor
-  - ShowTimer
   - ReadyIcorn
+  - ResetDice
+  - RespawnSpaceship
+  - SetDice
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

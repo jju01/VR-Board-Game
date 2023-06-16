@@ -73,7 +73,7 @@ public class PhysicRayCast : MonoBehaviour
                         // 1. Basic Model 비활성화
                         hitInfo.collider.gameObject.SetActive(false);
                         // 주사위 결과가 나온다
-                        Dice.Instance.RandomDice();
+                        GameManager.Instance.MyDice.RandomDice();
                     }
                 }
             }
@@ -96,7 +96,7 @@ public class PhysicRayCast : MonoBehaviour
                         // 1. Basic Model 비활성화
                         hitInfo.collider.gameObject.SetActive(false);
                         // 주사위 결과가 나온다
-                        Dice.Instance.RandomDice();
+                        GameManager.Instance.MyDice.RandomDice();
                     }
                 }
             }

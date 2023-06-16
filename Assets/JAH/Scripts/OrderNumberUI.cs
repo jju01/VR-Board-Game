@@ -38,8 +38,6 @@ public class OrderNumberUI : MonoBehaviour
     {
         // 나 자신(버튼) 사라짐
         gameObject.SetActive(false);
-        // 주사위 생성 
-        Dice.Instance.OrderNumber();        
 
         while (true)
         {   
