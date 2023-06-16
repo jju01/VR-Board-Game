@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorSpace: 7
   hasSetTelemetryEnabled: 1
+<<<<<<< HEAD
   telemetryEnabled: 1
+=======
+  telemetryEnabled: 0
+>>>>>>> 61625a200a5748ca370d003e09e36654d70febc1
