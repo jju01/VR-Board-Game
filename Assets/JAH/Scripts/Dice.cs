@@ -51,17 +51,18 @@ public class Dice : MonoBehaviour
 
         transform.Find("Basic Model").gameObject.SetActive(true);
 
-        // A. VR Controller 사용 모드인 경우 
+        // VR Controller 사용 모드인 경우 
         if (GameManager.Instance.useVRController)
-        { // OVRCamera 앞에 주사위 위치시킴
-            transform.Find("Basic Model").gameObject.transform.position = ovrcamera.transform.position + (ovrcamera.transform.forward * 2);
-        }
-        // B.  VR Controller 미사용 모드인 경우 
+         { // OVRCamera(CenterEyeAnchor) 앞에 주사위 위치시킴
+           transform.Find("Basic Model").gameObject.transform.position = ovrcamera.transform.position + (ovrcamera.transform.forward * 2);
+         }
         else
         {
             // Player 앞에 주사위 위치시킴
             transform.Find("Basic Model").gameObject.transform.position = player.transform.position + (player.transform.forward * 2);
         }
+            
+
  
     }
 
@@ -77,9 +78,18 @@ public class Dice : MonoBehaviour
                         moveValue = curDice+1;
 
                         DiceList[curDice].SetActive(true);
-                        
-                        // 3. Player 앞에 위치시킴 
-                        DiceList[curDice].gameObject.transform.position = player.transform.position + (player.transform.forward * 2);
+
+                        // VR Controller 사용 모드인 경우 
+                        if (GameManager.Instance.useVRController)
+                          { // OVRCamera(CenterEyeAnchor) 앞에 주사위 위치시킴
+                             DiceList[curDice].gameObject.transform.position = ovrcamera.transform.position + (ovrcamera.transform.forward * 2);
+                          }
+                        else // VR Controller 미사용 모드인 경우
+                        {
+                            //  Player 앞에 위치시킴 
+                            DiceList[curDice].gameObject.transform.position = player.transform.position + (player.transform.forward * 2);
+                        }
+                       
                         // 4. 1초 뒤 랜덤 주사위 비활성화 
                         Invoke("RandomDiceList", 1f);
                         // 5. 1초 뒤 숫자 UI  + 파티클 + 효과음 재생
