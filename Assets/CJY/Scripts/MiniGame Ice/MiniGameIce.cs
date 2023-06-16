@@ -24,6 +24,8 @@ public class MiniGameIce : MonoBehaviour
     // start 체크
     public bool isstart = false;
 
+    public bool isend = false;
+
     public GameObject game;
 
     private ExitGames.Client.Photon.Hashtable PlayerCustomProperties = new ExitGames.Client.Photon.Hashtable();
@@ -60,6 +62,10 @@ public class MiniGameIce : MonoBehaviour
     // 얼음이 그릇에 충돌했을 때 함수
     private void OnTriggerEnter(Collider other)
     {
+        if (isend)
+        {
+            return;
+        }
 
         Ice ice = other.GetComponent<Ice>();
         if (ice.isture)
@@ -82,8 +88,12 @@ public class MiniGameIce : MonoBehaviour
             {
                 PlayerCustomProperties.Add(miniGameIceKey, count);
             }
+            // 우승자 정보 저장
+            PlayerCustomProperties.Add($"winner2", PhotonNetwork.NickName);
 
             PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
+
+            // 이름 불러오기 함수실행
 
             OnGameEnd();
         }
@@ -94,6 +104,7 @@ public class MiniGameIce : MonoBehaviour
     {
         // 게임 종료!
         Debug.Log("게임종료!");
+        isend = true;
         // 게임 화면 일시정지
         // PauseGame();
         // UI 창 실행
@@ -131,4 +142,5 @@ public class MiniGameIce : MonoBehaviour
         Debug.Log("메인씬으로 쭈고");
     }
 
+    // 우승자 이름 ㄴ
 }

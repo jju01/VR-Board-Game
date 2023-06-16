@@ -9,6 +9,7 @@ TagManager:
   - Sword
   - Ready Image
   - Crown
+  - NetWorkManager
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - UI
   - Player
   - Ice
-  - 
+  - post process
   - 
   - 
   - 

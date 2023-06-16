@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Player : MonoBehaviourPunCallbacks
 {
@@ -12,8 +14,11 @@ public class Player : MonoBehaviourPunCallbacks
     private TextMeshProUGUI nameText;
 
     PhotonView pv;
-    MeshRenderer characterRenderer;
+    [SerializeField]
+    SkinnedMeshRenderer characterRenderer;
     public GameObject readycheck;
+
+    public Texture[] textures;
 
     private void Awake()
     {
@@ -24,7 +29,6 @@ public class Player : MonoBehaviourPunCallbacks
     void Start()
     {
         pv = GetComponent<PhotonView>();
-        characterRenderer = GetComponentInChildren<MeshRenderer>();
         SetName();
     }
 
@@ -33,15 +37,34 @@ public class Player : MonoBehaviourPunCallbacks
         nameText.text = pv.Owner.NickName;
     }
 
-    public void SetColor(Color color)
+    public void SetColor(int i)
     {
-        pv.RPC("ChangeColor", RpcTarget.All, color.r, color.g, color.b);
+        foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            if (p.CustomProperties.ContainsKey("avatar"))
+            {
+                int pi = (int)p.CustomProperties["avatar"];
+                if (i == pi)
+                {
+                    return;
+                }
+            }
+            print("선택됨");
+        }
+
+        pv.RPC("ChangeColor", RpcTarget.All, i);
+
+        Hashtable CustomProperties = new Hashtable();
+
+        CustomProperties.Add($"avatar", i);
+
+        PhotonNetwork.SetPlayerCustomProperties(CustomProperties);
     }
 
     [PunRPC]
-    public void ChangeColor(float r, float g, float b)
+    public void ChangeColor(int i)
     {
-        characterRenderer.material.color = new Color(r, g, b);
+        characterRenderer.material.mainTexture = textures[i];
     }
 
     // 레디하면 옆에 체크 표시 뜨는 함수
@@ -49,7 +72,7 @@ public class Player : MonoBehaviourPunCallbacks
     {
         pv.RPC("ReadyIcorn", RpcTarget.All);
     }
-    
+
 
     [PunRPC]
     public void ReadyIcorn()
