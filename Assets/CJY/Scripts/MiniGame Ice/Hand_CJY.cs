@@ -69,7 +69,7 @@ public class Hand_CJY : MonoBehaviour
         // Play하면, 나한테 붙어있는 Rigidbody 가져온다.
         rb = GetComponent<Rigidbody>();
         // 왼쪽 손일 때, 오른쪽 손일때에 따라 OVR Touch 방향 설정
-        if (GameManager.Instance.useVRController)
+        if (VRManager.Instance.useVRController)
         {
             switch (m_hand)
             {
@@ -110,7 +110,7 @@ public class Hand_CJY : MonoBehaviour
     private void HandController()
     {
         // A. VR Controller 사용
-        if (GameManager.Instance.useVRController)
+        if (VRManager.Instance.useVRController)
         {
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, controllerTouch) && catchObj == null)
             {

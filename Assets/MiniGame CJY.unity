@@ -3045,7 +3045,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1915347384}
-  - component: {fileID: 1915347383}
+  - component: {fileID: 1915347385}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3053,19 +3053,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1915347383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1915347382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cd9c96a5844b3143ad229208d1c2963, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useVRController: 1
 --- !u!4 &1915347384
 Transform:
   m_ObjectHideFlags: 0
@@ -3081,6 +3068,19 @@ Transform:
   m_Father: {fileID: 1876623241}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1915347385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915347382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558cb3ed555f8fa4c87fdc3e6331cedc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useVRController: 0
 --- !u!1001 &1949979081
 PrefabInstance:
   m_ObjectHideFlags: 0
