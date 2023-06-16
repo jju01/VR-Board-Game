@@ -19590,6 +19590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDice: {fileID: 4293766167561446464}
+  returnUI: {fileID: 0}
   DiceList:
   - {fileID: 1039554920180207227}
   - {fileID: 5595848160237612397}

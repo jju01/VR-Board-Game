@@ -14,6 +14,8 @@ public class Dice : MonoBehaviour
     private GameObject player;
 
     public GameObject baseDice;
+    public GameObject returnUI;
+
     // 주사위 리스트 (Basic Model, 1~6)
     public List<GameObject> DiceList = new List<GameObject>();
 
@@ -68,7 +70,8 @@ public class Dice : MonoBehaviour
         RandomDiceList();
         
         baseDice.SetActive(true);
-        
+
+
         transform.DOScale(Vector3.one, 0.4f);
         transform.DOMove(transform.position, 0.4f).ChangeStartValue(transform.position + Vector3.down * 1.5f);
         
@@ -172,6 +175,9 @@ public class Dice : MonoBehaviour
         baseDice.gameObject.SetActive(false);
         DiceList[idx].gameObject.SetActive(true);
 
+        // 순서를 나타내는 UI(" "님 차례입니다. 주사위를 굴리세요) 활성화
+        returnUI.SetActive(true);
+
         // 주사위 결과 나올 때 파티클,
         effectparticle.SetActive(true);
         
@@ -187,6 +193,10 @@ public class Dice : MonoBehaviour
         effectparticle.SetActive(false);
         baseDice.gameObject.SetActive(true);
         DiceList[idx].gameObject.SetActive(false);
+
+        // 순서를 나타내는 UI 비활성화
+        returnUI.SetActive(false);
+    
     }
 }
 
