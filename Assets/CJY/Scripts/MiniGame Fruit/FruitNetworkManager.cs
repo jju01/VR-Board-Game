@@ -168,7 +168,6 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
             {
                 Debug.Log("UI ");
                 // Á¡¼ö ¶ç¿ì±â
-
             }
         }
     }
