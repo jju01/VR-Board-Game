@@ -42,6 +42,9 @@ public class Items : MonoBehaviour
                 // 아이템 (나 자신) 비활성화
                 gameObject.SetActive(false);
 
+   
+                GameManager.Instance.GetItem(gameObject);
+                
                 //UI 활성화
                 switch (type)
                 {
@@ -53,9 +56,16 @@ public class Items : MonoBehaviour
 
                 }
 
+                // 효과음 재생
+                ItemEffectSound.Instance.ItemSoundPlay();
+
                 // 만일 GItem UI 4개 다 활성화 되면 게임 종료, Ending Scene으로 전환
                 if (IM.UIItems[0].activeSelf == true && IM.UIItems[1].activeSelf == true &&
-                    IM.UIItems[2].activeSelf == true && IM.UIItems[3].activeSelf == true ) print("GameClear");
+                    IM.UIItems[2].activeSelf == true && IM.UIItems[3].activeSelf == true)
+                {
+                    GameManager.Instance.SetWinner();
+                    print("GameClear");
+                }
             }
         }
     }
