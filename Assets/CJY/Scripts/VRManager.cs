@@ -35,13 +35,13 @@ public class VRManager : MonoBehaviour
     // 자동 VR Controller 사용여부 체크
     private void AutoControllerSetting()
     {
-        if (GameObject.Find("Player"))
-        {
-            useVRController = false;
-        }
         if (GameObject.Find("OVRCameraRig"))
         {
             useVRController = true;
+        }
+        else if (GameObject.Find("Player"))
+        {
+            useVRController = false;
         }
     }
 }

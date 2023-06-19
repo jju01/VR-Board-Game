@@ -17,8 +17,8 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
-        //MiniGameManager.Instance.menuPanel.SetActive(true);
-        //Invoke("StartTimer", 3f);
+        MiniGameManager.Instance.menuPanel.SetActive(true);
+        Invoke("StartTimer", 1f);
 
         Connect();
     }
@@ -81,7 +81,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("모두 참가 완료");
 
-            Invoke("StartTimer", 3f);
+            Invoke("StartTimer", 1f);
         }
     }
 
@@ -93,16 +93,23 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("모두 참가 완료");
 
-            Invoke("StartTimer", 3f);
+            Invoke("StartTimer", 1f);
         }
     }
 
     private void StartTimer()
     {
+        StartCoroutine(Panel());
+
+       // MiniGameManager.Instance.StartTimer();
+    }
+    IEnumerator Panel()
+    {
+        MiniGameManager.Instance.menuPanel.SetActive(true);
+        yield return new WaitForSeconds(10f);
         MiniGameManager.Instance.menuPanel.SetActive(false);
         MiniGameManager.Instance.isready = true;
         FruiteSpawner.Instance.StartFruit();
-       // MiniGameManager.Instance.StartTimer();
     }
 
     ////Timer 시작

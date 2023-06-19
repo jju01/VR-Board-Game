@@ -56,7 +56,7 @@ public class Hand_CJY : MonoBehaviour
     //  - 잡을 수 있는 범위
     public float catchRadius = 0.5f;
     //  - 잡은 물체가 뭐야?
-    private GameObject catchObj;
+    public GameObject catchObj;
     [Space]
     //  - 손의 위치(Left? or Right?)
     public PlayerHand m_hand;
@@ -69,7 +69,7 @@ public class Hand_CJY : MonoBehaviour
         // Play하면, 나한테 붙어있는 Rigidbody 가져온다.
         rb = GetComponent<Rigidbody>();
         // 왼쪽 손일 때, 오른쪽 손일때에 따라 OVR Touch 방향 설정
-        if (VRManager.Instance.useVRController)
+        //if (VRManager.Instance.useVRController)
         {
             switch (m_hand)
             {
@@ -77,6 +77,7 @@ public class Hand_CJY : MonoBehaviour
                 case PlayerHand.RIGHT: controllerTouch = OVRInput.Controller.RTouch; break;
             }
         }
+
         // LineRenderer 컴포넌트 가져와서 초기화한다.
         //lr = GetComponent<LineRenderer>();
         // LineRenderer 색상 초기화
@@ -221,8 +222,6 @@ public class Hand_CJY : MonoBehaviour
             catchObj.transform.position = hand.position;
             // +부모가 바라보는 방향과 똑같은 방향으로
             catchObj.transform.rotation = hand.rotation;
-
-
         }
 
     }

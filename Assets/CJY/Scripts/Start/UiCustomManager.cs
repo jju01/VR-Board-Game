@@ -7,6 +7,8 @@ public class UiCustomManager : MonoBehaviour
 {
     // 캐릭터 캔버스
     public GameObject customPannel;
+    // 사용법 패널
+    public GameObject howtousePanel;
     
     // Start is called before the first frame update
     void Start()
@@ -32,4 +34,13 @@ public class UiCustomManager : MonoBehaviour
         
     }
   
+    public void HowToUse()
+    {
+        howtousePanel.gameObject.SetActive(true);
+    }
+
+    public void EndButton()
+    {
+        howtousePanel.gameObject.SetActive(false);
+    }
 }

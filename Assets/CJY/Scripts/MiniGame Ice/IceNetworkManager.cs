@@ -12,7 +12,7 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("모두 참가 완료");
 
-            Invoke("StartGame", 3f);
+            Invoke("StartGame", 1f);
         }
         //Conect();
     }
@@ -70,29 +70,39 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log($"룸 입장 = {PhotonNetwork.InRoom}");
-
+        MiniGameIce.Instance.menuPanel.SetActive(true);
         if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
         {
             Debug.Log("모두 참가 완료");
 
-            Invoke("StartGame", 3f);
+            Invoke("StartGame", 1f);
         }
     }
 
     // 방에 들어온 사람 체크
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
+        MiniGameIce.Instance.menuPanel.SetActive(true);
         if (PhotonNetwork.CurrentRoom.MaxPlayers == PhotonNetwork.CurrentRoom.PlayerCount)
         {
             Debug.Log("모두 참가 완료");
 
-            Invoke("StartGame", 3f);
+            Invoke("StartGame", 1f);
         }
     }
 
     // 3초 뒤 게임시작
     private void StartGame()
     {
+        StartCoroutine(Panel());
+
+    }
+
+    IEnumerator Panel()
+    {
+        MiniGameIce.Instance.menuPanel.SetActive(true);
+        yield return new WaitForSeconds(10f);
+        MiniGameIce.Instance.menuPanel.SetActive(false);
         MiniGameIce.Instance.isstart = true;
         if (MiniGameIce.Instance.isstart == true)
         {
@@ -110,8 +120,8 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
             //targetPlayer.NickName
             MiniGameIce.Instance.OnGameEnd();
 
-        // 이름 불러오기 함수 실행
+            // 이름 불러오기 함수 실행
         }
-        
+
     }
 }
