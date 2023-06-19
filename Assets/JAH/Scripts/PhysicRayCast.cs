@@ -38,7 +38,7 @@ public class PhysicRayCast : MonoBehaviour
 
 
         // 왼쪽 손일 때 or 오른쪽 손일 때에 따라 OVR Touch 방향 설정
-        if (GameManager.Instance.useVRController)
+        if (VRManager.Instance.useVRController)
         {
             switch (m_hand)
             {
@@ -54,7 +54,7 @@ public class PhysicRayCast : MonoBehaviour
         MakeLineActive();
 
         // A. VR Controller 사용 모드인 경우
-        if (GameManager.Instance.useVRController)
+        if (VRManager.Instance.useVRController)
         {
             // Oculus Quest2 연동 후 실행..
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch) || OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
@@ -134,7 +134,7 @@ public class PhysicRayCast : MonoBehaviour
     private void MakeLineActive()
     {
         // A. VR Controller 사용
-        if (GameManager.Instance.useVRController)
+        if (VRManager.Instance.useVRController)
         {
             // 눌렀을 떄
             if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch) || OVRInput.Get(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
