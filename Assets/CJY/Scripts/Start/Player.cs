@@ -19,6 +19,7 @@ public class Player : MonoBehaviourPunCallbacks
     public GameObject readycheck;
 
     public Texture[] textures;
+    public GameObject nocolorText;
 
     private void Awake()
     {
@@ -46,6 +47,8 @@ public class Player : MonoBehaviourPunCallbacks
                 int pi = (int)p.CustomProperties["avatar"];
                 if (i == pi)
                 {
+                    // ÀÌ¼±ÁÂ UI ¶ß±â
+                    NetworkManager.Instance.NOColorSelected();
                     return;
                 }
             }
@@ -60,6 +63,9 @@ public class Player : MonoBehaviourPunCallbacks
 
         PhotonNetwork.SetPlayerCustomProperties(CustomProperties);
     }
+
+    
+
 
     [PunRPC]
     public void ChangeColor(int i)

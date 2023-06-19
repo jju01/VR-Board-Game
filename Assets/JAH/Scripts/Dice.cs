@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using Photon.Pun;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 // 역할 1: 주사위를 굴린다
 // 역할 2: 주사위 수만큼 Player를 이동시킨다 (IceCube 스크립트)
@@ -38,7 +39,13 @@ public class Dice : MonoBehaviour
     // 주사위 결과 나올 때 효과음
     private AudioSource effectaudio;
     // >> 파티클
+    public GameObject effectparticlePref;
     public GameObject effectparticle;
+
+
+    // Player가 칸에 도착했을 때 나오는 파티클(Enter 파티클)
+    public GameObject enterparticlePref;
+    public GameObject enterparticle;
 
     private void Start()
     {
@@ -46,6 +53,13 @@ public class Dice : MonoBehaviour
         player = GameManager.Instance.MyPlayer;
 
         effectaudio = GetComponent<AudioSource>();
+
+        effectparticle = Instantiate(effectparticlePref);
+        effectparticle.SetActive(false);
+
+        enterparticle = Instantiate(enterparticlePref);
+        enterparticle.SetActive(false);
+
     }
 
     // 주사위 이동 값(= curDice +1)
@@ -70,6 +84,12 @@ public class Dice : MonoBehaviour
         
         baseDice.SetActive(true);
 
+
+        // 주사위 파티클 위치
+        effectparticle.transform.position = transform.position + (Vector3.down * 0.486f);
+     
+        
+       
 
         transform.DOScale(Vector3.one, 0.4f);
         transform.DOMove(transform.position, 0.4f).ChangeStartValue(transform.position + Vector3.down * 1.5f);
@@ -109,8 +129,7 @@ public class Dice : MonoBehaviour
 
         pv.RPC("SetDice", RpcTarget.All, curDice);
         
-        // 3. 1초 뒤 숫자 UI  + 파티클 + 효과음 재생
-        // 4. 1초 뒤 숫자 UI  + 파티클 + 효과음 비활성화
+
 
         // 5. 2초 뒤 Player를 주사위 수만큼 이동시킴 
         Invoke("MoveToNext", 2.5f);
@@ -162,9 +181,20 @@ public class Dice : MonoBehaviour
         isMoving = false;
 
         if (moveValue > 0)
+        {
             MoveToNext();
+            enterparticle.SetActive(false);
+        }
         else
             GameManager.Instance.NextTurn();
+
+        if(moveValue <=1)
+        {
+            //enterparicle 재생
+            //Enter 파티클 위치
+            enterparticle.transform.position = player.transform.position + (player.transform.up * -0.5f);
+            enterparticle.SetActive(true);
+        }
     }
 
     
@@ -176,7 +206,8 @@ public class Dice : MonoBehaviour
 
         // 주사위 결과 나올 때 파티클,
         effectparticle.SetActive(true);
-        
+
+
         // 효과음 활성화
         effectaudio.Stop();
         effectaudio.Play();
@@ -190,8 +221,9 @@ public class Dice : MonoBehaviour
         baseDice.gameObject.SetActive(true);
         DiceList[idx].gameObject.SetActive(false);
 
-    
     }
+
+
 }
 
 

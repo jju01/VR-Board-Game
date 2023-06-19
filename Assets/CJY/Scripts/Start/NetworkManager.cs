@@ -18,6 +18,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [Space]
     public GameObject startPanel;
     public GameObject chrPanel;
+    public GameObject noColorPanel;
 
     private List<Transform> positionList = new List<Transform>();
 
@@ -169,5 +170,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
             Debug.Log(playerStr);
         }
+    }
+
+    public void NOColorSelected()
+    {
+        StartCoroutine(NoColorSelect());
+    }
+
+    // ÀÌ¼±ÁÂ UI ¶ß´Â ÇÔ¼ö
+    IEnumerator NoColorSelect()
+    {
+        noColorPanel.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        noColorPanel.SetActive(false);
     }
 }

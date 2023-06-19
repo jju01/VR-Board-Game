@@ -10,6 +10,12 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    public string Minigame1Scene;
+    public string Minigame2Scene;
+    public string IslandScene;
+    public string EndingScene;
+    
+    
     // VR Controller 사용 여부
     public bool useVRController = false;
     
@@ -96,6 +102,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         BoardGameReady();
+        
+        ItemPosition.Instance.SetItemFromNetwork();
+        ItemPosition.Instance.SetTriggerFromNetwork();
+                
+        List<int> randPool = InitRandomPool();
+        if(randPool == null)
+            return;
+        
+        InitItemInfo(randPool);
+        InitTriggerInfo(randPool);
     }
 
     public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps)
@@ -119,6 +135,24 @@ public class GameManager : MonoBehaviourPunCallbacks
             
             TurnStart();
         }
+
+        if (propertiesThatChanged.ContainsKey("itemSetting"))
+        {
+            ItemPosition.Instance.SetItemFromNetwork();
+        }
+        
+        if (propertiesThatChanged.ContainsKey("triggerSetting"))
+        {
+            ItemPosition.Instance.SetTriggerFromNetwork();
+        }
+        
+        if (propertiesThatChanged.ContainsKey("GameWinner"))
+        {
+            if(PhotonNetwork.IsMasterClient == false)
+                return;
+            
+            PhotonNetwork.LoadLevel(EndingScene);
+        }
     }
 
     #endregion
@@ -135,7 +169,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         IceCube targetCube = StageManager.Instance.iceCubes[iceIdx];
         Vector3 cubePosition = targetCube.transform.position;
-        cubePosition.y = 2.6f;
+        cubePosition.y = 2.115f;
         
         MyPlayer = PhotonNetwork.Instantiate("BoardGamePlayer", cubePosition, Quaternion.identity);
         MyPlayer.GetComponent<BoardGamePlayer>().SetCamera(cameraObj.transform);
@@ -167,7 +201,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void PickOrder(TMP_Text textComp)
+    public void PickOrder(CardSelector card)
     {
         int random = 0;
         bool isUnique = false;
@@ -191,8 +225,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         
         myOrder = random;
-        textComp.text = $"{myOrder+1}";
-        
+        card.SetCard(myOrder);
+
         Hashtable hs = new Hashtable();
         hs.Add("PlayerOrder", myOrder);
         PhotonNetwork.SetPlayerCustomProperties(hs);
@@ -251,7 +285,89 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
     }
 
+    public List<int> InitRandomPool()
+    {
+        if(PhotonNetwork.IsMasterClient == false)
+            return null;
+
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("itemSetting") || PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("triggerSetting"))
+            return null;
+        
+        StageManager stage = StageManager.Instance; 
+        List<int> itemPosRandPool = new List<int>();
+        for (int i = 0; i < stage.iceCubes.Count; i++)
+        {
+            if(i != stage.startCubeIdx && i != stage.islandCubeIdx)
+                itemPosRandPool.Add(i);
+        }
+
+        return itemPosRandPool;
+    }
+
+    public void InitItemInfo(List<int> randPool)
+    {
+        if(PhotonNetwork.IsMasterClient == false)
+            return;
+        
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("itemSetting") == false)
+        {
+            int itemCount = ItemPosition.Instance.items.Count;
+            int[] items = new int[itemCount];
+            for (int i = 0; i < items.Length; i++)
+            {
+                int randPos = Random.Range(0, randPool.Count);
+                items[i] = randPool[randPos];
+                randPool.RemoveAt(randPos);
+            }
+
+            Hashtable hs = new Hashtable();
+            hs.Add("itemSetting", items);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+        }
+    }
     
+    public void InitTriggerInfo(List<int> randPool)
+    {
+        if(PhotonNetwork.IsMasterClient == false)
+            return;
+        
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("triggerSetting") == false)
+        {
+            int triggerCount = ItemPosition.Instance.triggers.Count;
+            int[] triggers = new int[triggerCount];
+            for (int i = 0; i < triggers.Length; i++)
+            {
+                int randPos = Random.Range(0, randPool.Count);
+                triggers[i] = randPool[randPos];
+                randPool.RemoveAt(randPos);
+            }
+
+            Hashtable hs = new Hashtable();
+            hs.Add("triggerSetting", triggers);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+        }
+    }
+
+    public void GetItem(GameObject item)
+    {
+        int itemIdx = ItemPosition.Instance.items.IndexOf(item);
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("itemSetting"))
+        {
+            int[] itemSettings = (int[])PhotonNetwork.CurrentRoom.CustomProperties["itemSetting"];
+            itemSettings[itemIdx] = -1;
+            
+            Hashtable hs = new Hashtable();
+            hs.Add("itemSetting", itemSettings);
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+        }
+    }
+
+    public void SetWinner()
+    {
+        Hashtable hs = new Hashtable();
+        hs.Add("GameWinner", PhotonNetwork.LocalPlayer);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+    }
 
     #endregion
     
