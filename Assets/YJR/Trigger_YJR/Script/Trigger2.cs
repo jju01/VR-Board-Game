@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-//  2. trigger2 : 칸에 닿은 player와 나머지 player중 랜덤으로 1명의 위치 서로 바꾸기 / player 전부 랜덤위치 바꾸기.
+//  2. trigger2 : 칸에 닿은 player와 나머지 player중 랜덤으로 1명의 위치 서로 바꾸기 
 //  - 단 위치를 바꾸고 난후, 같은 Trigger에 재충돌하지 않도록 해야한다. 
 
 public class Trigger2 : MonoBehaviour
