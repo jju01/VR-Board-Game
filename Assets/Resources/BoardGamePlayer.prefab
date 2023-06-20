@@ -225,6 +225,35 @@ SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 3916524939532589410, guid: 999fd308b5e2c2043b12d0ecdbed505a, type: 3}
   m_PrefabInstance: {fileID: 3473055768399091575}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2407398744279688138 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1250322520231359677, guid: 999fd308b5e2c2043b12d0ecdbed505a, type: 3}
+  m_PrefabInstance: {fileID: 3473055768399091575}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2952021287864102936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2407398744279688138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: Walk
+  - Type: 4
+    SynchronizeType: 2
+    Name: Idle
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!4 &3036302234988280176 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1878521224003317255, guid: 999fd308b5e2c2043b12d0ecdbed505a, type: 3}
