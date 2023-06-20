@@ -141,14 +141,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             {
                 if (p.CustomProperties.ContainsKey("PlayerReady"))
                     readyCount++;
-               // Player.Instance.ReadyChecktrue();
+                // Player.Instance.ReadyChecktrue();
                 print("올라감");
             }
 
             if (readyCount == 2)
             {
                 Debug.Log("게임 씬 가자");
-                PhotonNetwork.LoadLevel(1);
+                PhotonNetwork.LoadLevel("Main");
             }
         }
 
