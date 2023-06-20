@@ -26,7 +26,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     public GameObject guideUI;
-    
+    // 아이템 인벤토리 UI
+    public GameObject iteminventoryUI;
+
     public GameObject cameraObj;
     public GameObject MyPlayer;
     public Dice MyDice;
@@ -254,6 +256,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void RoomDataLoad()
     {
+        iteminventoryUI.SetActive(true);
+
         var roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
         if (roomProps.ContainsKey("PlayerTurn"))
         {

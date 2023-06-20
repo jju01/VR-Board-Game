@@ -145,7 +145,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 print("올라감");
             }
 
-            if (readyCount == 3)
+            if (readyCount == 1)
             {
                 Debug.Log("게임 씬 가자");
                 PhotonNetwork.LoadLevel("Main");
