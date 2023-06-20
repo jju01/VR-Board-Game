@@ -79,6 +79,7 @@ public class Items : MonoBehaviour
                 {
                     GameManager.Instance.SetWinner();
                     print("GameClear");
+                    GameManager.Instance.SceneLoad("Ending Scene");
                 }
             }
         }

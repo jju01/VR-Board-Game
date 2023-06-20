@@ -326,7 +326,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
     }
 
-    private void SceneLoad(string sceneName)
+    public void SceneLoad(string sceneName)
     {
         if(PhotonNetwork.IsMasterClient == false)
             return;
