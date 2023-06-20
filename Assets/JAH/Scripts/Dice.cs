@@ -172,6 +172,9 @@ public class Dice : MonoBehaviour
         // player를 이동시킨다
         player.transform.DOMove(goalPos, 0.8f).OnComplete(MoveDone);
         player.transform.DOLookAt(goalPos, 0.5f);
+        // player walk 애니메이션 실행
+        BoardGamePlayer.Instance.anim.SetBool("Idle", false);
+        BoardGamePlayer.Instance.anim.SetBool("Walk", true);
     }
 
     private void MoveDone()
@@ -182,6 +185,12 @@ public class Dice : MonoBehaviour
         moveValue--;
         isMoving = false;
 
+        // 애니메이션 Idle 모드
+        if(moveValue <= 1)
+        {
+            BoardGamePlayer.Instance.anim.SetBool("Walk", false);
+            BoardGamePlayer.Instance.anim.SetBool("Idle", true);
+        }
         if (moveValue > 0)
             MoveToNext();
         else

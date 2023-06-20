@@ -5,16 +5,29 @@ using UnityEngine;
 
 public class BoardGamePlayer : MonoBehaviour
 {
+    // 싱글톤으로 관리
+    public static BoardGamePlayer Instance;
+
     [SerializeField] private Transform camPos;
     [SerializeField] private SkinnedMeshRenderer characterRenderer;
     [SerializeField] private Texture[] textures;
     
     private PhotonView pv;
-    
+
+    // 캐릭터 애니메이션
+    public Animator anim;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
     void Start()
     {
         pv = GetComponent<PhotonView>();
         SetAvatar();
+
+        // Animator 컴포넌트 가져오기   -> 캐릭터 애니메이션 Dice에서 적용!
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void SetAvatar()
