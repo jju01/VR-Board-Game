@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -18,7 +19,20 @@ public class Items : MonoBehaviour
     public Type type;
 
 
-
+    private void Start()
+    {
+        ItemManager IM = FindObjectOfType<ItemManager>();
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey($"itemType_{i}") == false)
+                continue;
+            
+            int itemCount = (int)PhotonNetwork.LocalPlayer.CustomProperties[$"itemType_{i}"];
+            if(itemCount > 0)
+                IM.UIItems[i].SetActive(true);;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -42,8 +56,8 @@ public class Items : MonoBehaviour
                 // 아이템 (나 자신) 비활성화
                 gameObject.SetActive(false);
 
-   
-                GameManager.Instance.GetItem(gameObject);
+                int itemIdx = ItemPosition.Instance.items.IndexOf(gameObject);
+                GameManager.Instance.GetItem(itemIdx, (int)type);
                 
                 //UI 활성화
                 switch (type)
@@ -55,7 +69,7 @@ public class Items : MonoBehaviour
                     case Type.D: IM.UIItems[3].SetActive(true); break;
 
                 }
-
+                
                 // 효과음 재생
                 ItemEffectSound.Instance.ItemSoundPlay();
 

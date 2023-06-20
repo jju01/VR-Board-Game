@@ -12,6 +12,8 @@ public class IceCube : MonoBehaviour
     public UIManager ui;
     public List<IceCube> nextIceCube;
 
+    public Trigger trigger;
+    
     public static IceCube Instance;
 
     private void Awake()

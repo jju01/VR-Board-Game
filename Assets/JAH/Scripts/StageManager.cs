@@ -21,7 +21,12 @@ public class StageManager : MonoBehaviour
         
         iceCubes = GetComponentsInChildren<IceCube>().ToList();
         
-        startCubeIdx = iceCubes.IndexOf(startCube);
-        islandCubeIdx = iceCubes.IndexOf(islandCube);
+        startCubeIdx = GetIceCubeIdx(startCube);
+        islandCubeIdx = GetIceCubeIdx(islandCube);
+    }
+
+    public int GetIceCubeIdx(IceCube cube)
+    {
+        return iceCubes.IndexOf(cube);
     }
 }

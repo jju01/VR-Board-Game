@@ -34,4 +34,16 @@ public class BoardGamePlayer : MonoBehaviour
         camTr.localPosition = Vector3.zero;
         camTr.localEulerAngles = Vector3.zero;
     }
+
+
+    public void SetPosition(Vector3 pos)
+    {
+        pv.RPC("RecvPosition", RpcTarget.All, pos);
+    }
+
+    [PunRPC]
+    public void RecvPosition(Vector3 pos)
+    {
+        transform.position = pos;
+    }
 }
