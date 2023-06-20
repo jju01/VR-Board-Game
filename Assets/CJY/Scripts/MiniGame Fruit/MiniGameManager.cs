@@ -109,7 +109,9 @@ public class MiniGameManager : MonoBehaviour
                 PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
 
                 Time.timeScale = 0;
+                isready = false;
                 OnGameEnd();
+                
             }
 
         }
@@ -143,6 +145,7 @@ public class MiniGameManager : MonoBehaviour
     // 게임 종료 & 결과 UI 창 나오는 함수
     IEnumerator OnPanel()
     {
+        print("실행");
         yield return new WaitForSecondsRealtime(0.8f); // WaitForSecondsRealtime = timeScale 에 영향 x
         gameOverPanel.SetActive(true);
         yield return new WaitForSecondsRealtime(2f);
