@@ -65,8 +65,11 @@ public class PhysicRayCast : MonoBehaviour
 
                 RaycastHit hitInfo = new RaycastHit();
 
-                if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity))
+                // 주사위만 ray를 맞도록
+                int layerMask = 1 << LayerMask.NameToLayer("Dice");
+                if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, layerMask))
                 {
+                    Debug.Log("aaaa : " + hitInfo.collider.gameObject.name);
                     // Ray 맞은게 주사위(Basic Model)이라면 
                     if (hitInfo.transform.name == "Basic Model")
                     {
