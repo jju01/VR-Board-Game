@@ -197,7 +197,7 @@ public class Dice : MonoBehaviour
         {
             if (Icecube.trigger)
             {
-                Invoke("TriggerAction", 2.5f);
+                Invoke("TriggerAction", 5f);
             }
             else
             {

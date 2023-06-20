@@ -158,11 +158,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (propertiesThatChanged.ContainsKey("BoardGameTurn"))
                 bTurn = (int)propertiesThatChanged["BoardGameTurn"];
             
-            if(bTurn == 2)
-                SceneLoad(Minigame1Scene);
-            else if(bTurn == 4)
-                SceneLoad(Minigame2Scene);
-            else
+            //if(bTurn == 2)
+            //    SceneLoad(Minigame1Scene);
+            //else if(bTurn == 4)
+            //    SceneLoad(Minigame2Scene);
+            //else
                 TurnStart();
         }
 
