@@ -128,6 +128,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: e569433e2f29446469a94ee6940ea0db, type: 3}
   - {fileID: 2800000, guid: f3b1642c62b6ef442bf376096a474bbf, type: 3}
   - {fileID: 2800000, guid: 2d92780bbf5a082448b611c8ef0ebd78, type: 3}
+  anim: {fileID: 0}
 --- !u!143 &4368584143161744234
 CharacterController:
   m_ObjectHideFlags: 0
@@ -213,6 +214,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2133404833501143006, guid: 999fd308b5e2c2043b12d0ecdbed505a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: cdd075667ee8287459e52c3e047dcb4e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 999fd308b5e2c2043b12d0ecdbed505a, type: 3}
 --- !u!137 &461776726930804245 stripped
