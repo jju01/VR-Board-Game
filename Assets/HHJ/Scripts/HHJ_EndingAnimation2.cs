@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
-public class HHJ_EndingAnimation2 : MonoBehaviour
+using Photon.Pun;
+public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     // 발판
@@ -70,7 +71,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
     private TextMeshProUGUI winnerName;
 
     void Start()
-    {           
+    {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         ani = player.GetComponent<Animator>();
         crown = GameObject.FindGameObjectWithTag("Crown").transform;
@@ -78,7 +79,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
         // 오브젝트 비활성화
         SetActiveObj(false);
 
-        PlayerName();
+        PlayerName();     
     }
 
     private void Update()
@@ -113,7 +114,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
         // 왕관 회전한다.
         crown.Rotate(new Vector3(0, 0.1f, 0) * rotSpeed);
 
-        var posY = 10f ;
+        var posY = 10f;
 
         // 만일 애니메이션이 일정수치 이상 진행되었다면
         if ((ani.GetCurrentAnimatorStateInfo(0).IsName("metarig|Victory") &&
@@ -129,7 +130,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
             ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.78f &&
             ani.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f))
         {
-            ani.transform.DOLocalRotate(new Vector3(0,135,0), 1.5f).SetEase(Ease.Linear);
+            ani.transform.DOLocalRotate(new Vector3(0, 135, 0), 1.5f).SetEase(Ease.Linear);
 
             // 왕관을 조금 위로 올린다.
             crown.position = Vector3.Lerp(crown.position,
@@ -167,7 +168,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         // 얼음 떨어질 위치는 빙수그릇 지점
         buildObj2.position = Vector3.MoveTowards(buildObj2.position,
-            new Vector3(buildObj1.position.x,buildObj1.position.y + intervalObjY,
+            new Vector3(buildObj1.position.x, buildObj1.position.y + intervalObjY,
             buildObj1.position.z), speed * Time.deltaTime);
         yield return new WaitForSeconds(0.5f);
         // 팥 떨어질 지점은 얼음지점
@@ -177,7 +178,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         // 과일 떨어질 지점은 팥 지점
         buildObj4.position = Vector3.MoveTowards(buildObj4.position,
-            new Vector3(buildObj3.position.x, buildObj3.position.y + intervalObjY, 
+            new Vector3(buildObj3.position.x, buildObj3.position.y + intervalObjY,
             buildObj3.position.z), speed * Time.deltaTime);
         yield return new WaitForSeconds(1f);
         DropSpoon();
@@ -213,7 +214,8 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
     // 우승자 이름 표시
     private void PlayerName()
     {
-        winnerName.text = player.gameObject.name;/*winnerName.text.Replace("Winner!" + "\\n", player.name)*/;
+        Photon.Realtime.Player winner = (Photon.Realtime.Player)PhotonNetwork.CurrentRoom.CustomProperties["GameWinner"];
+        winnerName.text = winner.NickName;
     }
 
     IEnumerator EndingPlay()
@@ -226,6 +228,6 @@ public class HHJ_EndingAnimation2 : MonoBehaviour
         DropWinner();
         yield return new WaitForSeconds(3f);
         DropCrown();
-        AnimationPlay();        
+        AnimationPlay();
     }
 }

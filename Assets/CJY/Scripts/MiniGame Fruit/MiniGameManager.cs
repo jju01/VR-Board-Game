@@ -11,7 +11,7 @@ public class MiniGameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     // ≈∏¿Ã∏” 
-    private float timer = 30.0f;
+    private float timer = 3.0f;
     public TextMeshProUGUI timerText;
 
     [Space]
@@ -154,7 +154,9 @@ public class MiniGameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(5f);
         resultPanel.SetActive(false);
         itemPanel.SetActive(true);
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(4f);
+        Time.timeScale = 1;
+        yield return new WaitForSecondsRealtime(1f);
         itemPanel.SetActive(false);
         PhotonNetwork.LoadLevel("Main");
     }
