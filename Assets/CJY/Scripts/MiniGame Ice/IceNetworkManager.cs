@@ -121,7 +121,7 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
             MiniGameIce.Instance.OnGameEnd();
 
             // 이름 불러오기 함수 실행
-            MiniGameIce.Instance.WinnerPlayer(PhotonNetwork.NickName);
+            MiniGameIce.Instance.WinnerPlayer(targetPlayer.NickName);
            // MiniGameIce.Instance.WinnerPlayer("$winner2");
         }
     }

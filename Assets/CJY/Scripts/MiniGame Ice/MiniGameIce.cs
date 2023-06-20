@@ -72,7 +72,7 @@ public class MiniGameIce : MonoBehaviour
         }
 
         Ice ice = other.GetComponent<Ice>();
-        if (ice.isture && ice !=null)
+        if (ice != null &&  ice.isture)
         {
             ice.isture = false;
             count++;
