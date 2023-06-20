@@ -44,7 +44,7 @@ public class MiniGameManager : MonoBehaviour
     void Start()
     {
         timerText.text = timer.ToString();
-      
+
         // 처음점수(=0) 저장
         SaveScore();
     }
@@ -88,9 +88,9 @@ public class MiniGameManager : MonoBehaviour
         if (isready == true)
         {
             float time = Time.realtimeSinceStartup - startTime;
-            
+
             if (time < timer)
-            {                
+            {
                 timerText.text = Mathf.Round(timer - time).ToString();
             }
             else
@@ -111,7 +111,7 @@ public class MiniGameManager : MonoBehaviour
                 Time.timeScale = 0;
                 OnGameEnd();
             }
-            
+
         }
     }
 
@@ -151,5 +151,8 @@ public class MiniGameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(5f);
         resultPanel.SetActive(false);
         itemPanel.SetActive(true);
+        yield return new WaitForSecondsRealtime(5f);
+        itemPanel.SetActive(false);
+        PhotonNetwork.LoadLevel("Main");
     }
 }

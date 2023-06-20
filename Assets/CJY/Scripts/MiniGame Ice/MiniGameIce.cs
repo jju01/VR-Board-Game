@@ -119,14 +119,17 @@ public class MiniGameIce : MonoBehaviour
     // 게임 종료 & 결과 UI 창 나오는 함수
     IEnumerator OnPanel()
     {
-        yield return new WaitForSecondsRealtime(0.8f); // WaitForSecondsRealtime = timeScale 에 영향 x
+        yield return new WaitForSecondsRealtime(1f); // WaitForSecondsRealtime = timeScale 에 영향 x
         gameOverPanel.SetActive(true);
         yield return new WaitForSecondsRealtime(2f);
         gameOverPanel.SetActive(false);
         resultPanel.SetActive(true);
-        yield return new WaitForSecondsRealtime(2.5f);
+        yield return new WaitForSecondsRealtime(5f);
         resultPanel.SetActive(false);
         itemPanel.SetActive(true);
+        yield return new WaitForSecondsRealtime(5f);
+        itemPanel.SetActive(false);
+        PhotonNetwork.LoadLevel("Main");
     }
 
     //// 시간 멈춤 => 게임끝나면 동작일시정지하고 UI창만 나오게끔...
