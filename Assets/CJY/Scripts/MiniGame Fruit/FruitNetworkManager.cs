@@ -20,7 +20,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
         MiniGameManager.Instance.menuPanel.SetActive(true);
         Invoke("StartTimer", 1f);
 
-        Connect();
+        //Connect();
     }
 
     // 포톤 서버 접속
@@ -158,6 +158,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
         if (changedProps.ContainsKey($"MiniGameFruit"))
         {
             MiniGameManager.Instance.OnGameEnd();
+            //PhotonNetwork.LoadLevel("Main");
         }
 
         // 점수정보 가지고 있는지 다 확인 후 조건 충족하면 UI 창 나오기
@@ -171,7 +172,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
                 print("올라감");
             }
 
-            if (scoreCount == 2)
+            if (scoreCount == 1)
             {
                 Debug.Log("UI ");
                 // 점수 띄우기
