@@ -72,7 +72,7 @@ public class MiniGameIce : MonoBehaviour
         }
 
         Ice ice = other.GetComponent<Ice>();
-        if (ice.isture)
+        if (ice.isture && ice !=null)
         {
             ice.isture = false;
             count++;
@@ -99,6 +99,8 @@ public class MiniGameIce : MonoBehaviour
 
             // 이름 불러오기 함수 실행
             WinnerPlayer(PhotonNetwork.NickName);
+            // MiniGameIce.Instance.WinnerPlayer("$winner2");
+
             // 게임 종료 함수
             OnGameEnd();
         }
