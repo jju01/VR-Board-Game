@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,35 +42,63 @@ public class Trigger : MonoBehaviour
 
             if (GameManager.Instance.MyDice.moveValue <= 1)
             {
-                // ItemManager 데이터 가져온다
-                ItemManager IM = FindObjectOfType<ItemManager>();
-
-                triggerparticle.transform.position = gameObject.transform.position + Vector3.down * 1.5f;
+            
+                triggerparticle.transform.position = gameObject.transform.position;
                 // 파티클 재생 
                 triggerparticle.Stop();
                 triggerparticle.Play();
 
                 // 오디오 재생
 
-
-                // Trigger발동! UI 활성화
-                // >> 위치: 나자신, 방향: 플레이어쪽으로
-                triggerui.SetActive(true);
-                triggerui.transform.position = gameObject. transform.position + Vector3.down * 1.5f;
-                transform.LookAt(GameManager.Instance.MyPlayer.transform);
-
-                //Trigger_1~3 설명 UI 활성화
-                switch (type)
-                {
-                    // 만일 Item type이 A라면, GItem UI 활성화 + 플레이어 쪽으로 방향 설정..
-                    case Type.A: IM.TriggerUI[0].SetActive(true); 
-                        break;
-                    case Type.B: IM.TriggerUI[1].SetActive(true); break;
-                    case Type.C: IM.TriggerUI[2].SetActive(true); break;
-                   
-
-                }
+                // triggerui 애니메이션 실행
+                StartCoroutine(TriggerAnim());
             }
+        }
+    }
+
+    IEnumerator TriggerAnim ()
+    {
+        // 1) triggerui를 활성화한다.
+        // Trigger발동! UI 활성화
+        // >> 위치: 나자신, 방향: 플레이어쪽으로
+        triggerui.SetActive(true);
+        triggerui.transform.position = gameObject.transform.position + Vector3.forward * 2f;
+        transform.LookAt(GameManager.Instance.MyPlayer.transform);
+
+        // 2) 2초 기다림
+        yield return new WaitForSeconds(2.0f);
+
+        // 3) triggerui를 비활성화한다.
+        triggerui.SetActive(false);
+
+        // ItemManager 데이터 가져온다
+        ItemManager IM = FindObjectOfType<ItemManager>();
+
+        //4) Trigger_1~3 설명 UI 활성화
+        switch (type)
+        {
+            // 만일 Item type이 A라면, GItem UI 활성화 + 플레이어 쪽으로 방향 설정..
+            case Type.A:
+                IM.TriggerUI[0].SetActive(true);
+                IM.TriggerUI[0].transform.position = gameObject.transform.position + Vector3.forward * 2f;
+                IM.TriggerUI[0].transform.LookAt(GameManager.Instance.MyPlayer.transform);
+                yield return new WaitForSeconds(2.0f);
+                IM.TriggerUI[0].SetActive(false);
+                break;
+            case Type.B:
+                IM.TriggerUI[1].SetActive(true);
+                IM.TriggerUI[1].transform.position = gameObject.transform.position + Vector3.forward * 2f;
+                IM.TriggerUI[1].transform.LookAt(GameManager.Instance.MyPlayer.transform);
+                yield return new WaitForSeconds(2.0f);
+                IM.TriggerUI[1].SetActive(false);
+                break;
+            case Type.C:
+                IM.TriggerUI[2].SetActive(true);
+                IM.TriggerUI[2].transform.position = gameObject.transform.position + Vector3.forward * 2f;
+                IM.TriggerUI[2].transform.LookAt(GameManager.Instance.MyPlayer.transform);
+                yield return new WaitForSeconds(2.0f);
+                IM.TriggerUI[2].SetActive(false);
+                break;
         }
     }
 }

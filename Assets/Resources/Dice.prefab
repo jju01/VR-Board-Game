@@ -67,8 +67,6 @@ MonoBehaviour:
   isRolling: 0
   effectparticlePref: {fileID: 8288552635521919269, guid: 5bf76a8698d004b43962755fde7eb626, type: 3}
   effectparticle: {fileID: 0}
-  enterparticlePref: {fileID: 9190547271911182502, guid: 3ceb1c5c5ea8dea4cbe90d6bdf18061d, type: 3}
-  enterparticle: {fileID: 0}
 --- !u!114 &1644668462821289776
 MonoBehaviour:
   m_ObjectHideFlags: 0

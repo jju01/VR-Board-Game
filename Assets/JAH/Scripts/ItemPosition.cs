@@ -155,6 +155,8 @@ public class ItemPosition : MonoBehaviour
 
                 triggers[i].transform.position = triggerPos;
                 triggers[i].gameObject.SetActive(true);
+
+                cubes[triggerPosIdx].trigger = triggers[i].GetComponent<Trigger>();
             }
         }
     }

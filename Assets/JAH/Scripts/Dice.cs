@@ -5,7 +5,6 @@ using UnityEngine;
 using DG.Tweening;
 using Photon.Pun;
 using Random = UnityEngine.Random;
-using UnityEngine.UI;
 
 // 역할 1: 주사위를 굴린다
 // 역할 2: 주사위 수만큼 Player를 이동시킨다 (IceCube 스크립트)
@@ -42,24 +41,31 @@ public class Dice : MonoBehaviour
     public GameObject effectparticlePref;
     public GameObject effectparticle;
 
-
-    // Player가 칸에 도착했을 때 나오는 파티클(Enter 파티클)
-    public GameObject enterparticlePref;
-    public GameObject enterparticle;
-
-    private void Start()
+    private void Awake()
     {
-        pv = GetComponent<PhotonView>();
-        player = GameManager.Instance.MyPlayer;
+        InitDice();
+    }
 
-        effectaudio = GetComponent<AudioSource>();
+    private void InitDice()
+    {
+        if(pv == null)
+            pv = GetComponent<PhotonView>();
+        
+        if(player == null)
+            player = GameManager.Instance.MyPlayer;
 
-        effectparticle = Instantiate(effectparticlePref);
-        effectparticle.SetActive(false);
-
-        enterparticle = Instantiate(enterparticlePref);
-        enterparticle.SetActive(false);
-
+        if(effectaudio == null)
+            effectaudio = GetComponent<AudioSource>();
+        
+        if (effectparticle == null)
+        {
+            effectparticle = Instantiate(effectparticlePref);
+            effectparticle.SetActive(false);
+        }
+        
+        rotX = transform.DOBlendableRotateBy(Vector3.right * 80, 0.7f).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
+        rotY = transform.DOBlendableRotateBy(Vector3.up * 360, 1.7f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
+        rotZ = transform.DOBlendableRotateBy(Vector3.forward * 360, 1.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
     }
 
     // 주사위 이동 값(= curDice +1)
@@ -84,19 +90,14 @@ public class Dice : MonoBehaviour
         
         baseDice.SetActive(true);
 
-
-        // 주사위 파티클 위치
         effectparticle.transform.position = transform.position + (Vector3.down * 0.486f);
-     
         
-       
-
         transform.DOScale(Vector3.one, 0.4f);
         transform.DOMove(transform.position, 0.4f).ChangeStartValue(transform.position + Vector3.down * 1.5f);
         
-        rotX = transform.DOBlendableRotateBy(Vector3.right * 80, 0.7f).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
-        rotY =transform.DOBlendableRotateBy(Vector3.up * 360, 1.7f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
-        rotZ =transform.DOBlendableRotateBy(Vector3.forward * 360, 1.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
+        rotX.Play();
+        rotY.Play();
+        rotZ.Play();
     }
 
     // 1. 주사위 나왔을 때 Ray를 쏘고 ,
@@ -129,7 +130,8 @@ public class Dice : MonoBehaviour
 
         pv.RPC("SetDice", RpcTarget.All, curDice);
         
-
+        // 3. 1초 뒤 숫자 UI  + 파티클 + 효과음 재생
+        // 4. 1초 뒤 숫자 UI  + 파티클 + 효과음 비활성화
 
         // 5. 2초 뒤 Player를 주사위 수만큼 이동시킴 
         Invoke("MoveToNext", 2.5f);
@@ -181,23 +183,101 @@ public class Dice : MonoBehaviour
         isMoving = false;
 
         if (moveValue > 0)
-        {
             MoveToNext();
-            enterparticle.SetActive(false);
-        }
         else
-            GameManager.Instance.NextTurn();
-
-        if(moveValue <=1)
         {
-            //enterparicle 재생
-            //Enter 파티클 위치
-            enterparticle.transform.position = player.transform.position + (player.transform.up * -0.5f);
-            enterparticle.SetActive(true);
+            if (Icecube.trigger)
+            {
+                Invoke("TriggerAction", 2.5f);
+            }
+            else
+            {
+                DoneAction();
+            }
         }
     }
 
-    
+    private void TriggerAction()
+    {
+        switch (Icecube.trigger.type)
+        {
+            case Trigger.Type.A:
+                int random = Random.Range(1, 4);
+                moveValue = random;
+                MoveToNext();
+                break;
+            
+            case Trigger.Type.B:
+                List<Photon.Realtime.Player> playerList = new List<Photon.Realtime.Player>();
+                foreach (var player in PhotonNetwork.PlayerList)
+                {
+                    if(player.IsLocal)
+                        continue;
+                    
+                    if(player.CustomProperties.ContainsKey("island"))
+                        continue;
+                    
+                    playerList.Add(player);
+                }
+
+                if (playerList.Count == 0)
+                    DoneAction();
+                else
+                {
+                    int randomPlayer = Random.Range(0, playerList.Count);
+                    int playerViewId = (int)playerList[randomPlayer].CustomProperties["PlayerView"];
+
+                    {
+                        PhotonView pv = PhotonView.Find(playerViewId);
+                        BoardGamePlayer bPlayer = pv.GetComponent<BoardGamePlayer>();
+                        BoardGamePlayer mPlayer = GameManager.Instance.MyPlayer.GetComponent<BoardGamePlayer>();
+
+                        Vector3 bPlayerPos = bPlayer.transform.position;
+                        Vector3 mPlayerPos = mPlayer.transform.position;
+
+                        bPlayer.SetPosition(mPlayerPos);
+                        mPlayer.SetPosition(bPlayerPos);
+                    }
+
+                    {
+                        int diceView = (int)playerList[randomPlayer].CustomProperties["DiceView"];
+                        PhotonView pv = PhotonView.Find(diceView);
+                        Dice bDice = pv.GetComponent<Dice>();
+                        
+                        int mCubeIdx = StageManager.Instance.GetIceCubeIdx(Icecube);
+
+                        int bCubeIdx = 0;
+                        if(playerList[randomPlayer].CustomProperties.ContainsKey("IceCubeIdx"))
+                            bCubeIdx = (int)playerList[randomPlayer].CustomProperties["IceCubeIdx"];
+                        
+                        Debug.Log($"bCubeIdx : {bCubeIdx}      mCubeIdx : {mCubeIdx}");
+                        
+                        bDice.SetCube(mCubeIdx);
+                        SetCube(bCubeIdx);
+                    }
+
+                    Invoke("DoneAction", 1.5f);
+                }
+
+                break;
+            
+            case Trigger.Type.C:
+                DiceSetActive();
+                break;
+        }
+    }
+
+    private void DoneAction()
+    {
+        int cubePosition = StageManager.Instance.GetIceCubeIdx(Icecube); 
+        GameManager.Instance.SavePosition(cubePosition);
+        GameManager.Instance.NextTurn();
+            
+        // if(cubePosition == StageManager.Instance.islandCubeIdx)
+        //     GameManager.Instance.GoToIsland();
+    }
+
+
     [PunRPC]
     public void SetDice(int idx)
     {
@@ -206,8 +286,7 @@ public class Dice : MonoBehaviour
 
         // 주사위 결과 나올 때 파티클,
         effectparticle.SetActive(true);
-
-
+        
         // 효과음 활성화
         effectaudio.Stop();
         effectaudio.Play();
@@ -221,9 +300,21 @@ public class Dice : MonoBehaviour
         baseDice.gameObject.SetActive(true);
         DiceList[idx].gameObject.SetActive(false);
 
+    
     }
 
+    
+    public void SetCube(int idx)
+    {
+        pv.RPC("RecvCube", RpcTarget.All, idx);
+    }
 
+    [PunRPC]
+    public void RecvCube(int idx)
+    {
+        Debug.Log($"RecvCube : {idx}");
+        Icecube = StageManager.Instance.iceCubes[idx];
+    }
 }
 
 

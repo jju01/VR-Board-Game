@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = UnityEngine.Random;
 
@@ -49,6 +50,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
+        
         AutoControllerSetting();
         CheckConnect();
     }
@@ -84,9 +87,35 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void CheckConnect()
     {
         if (PhotonNetwork.IsConnected)
-            BoardGameReady();
+        {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("island"))
+            {
+                
+                currentTurn = (int)PhotonNetwork.CurrentRoom.CustomProperties["PlayerTurn"];
+                myOrder = (int)PhotonNetwork.LocalPlayer.CustomProperties["PlayerOrder"];
+                IsMyTurn = currentTurn == myOrder;
+
+                if (IsMyTurn)
+                {
+                    Hashtable hs = new Hashtable();
+                    hs.Add("island", null);
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(hs);
+                    
+                    NextTurn();
+                }
+
+                GoToIsland();
+            }
+            else
+            {
+                BoardGameReady();   
+            }
+        }
         else
+        {
+            PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings();
+        }
     }
     
 
@@ -102,23 +131,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         BoardGameReady();
-        
-        ItemPosition.Instance.SetItemFromNetwork();
-        ItemPosition.Instance.SetTriggerFromNetwork();
-                
-        List<int> randPool = InitRandomPool();
-        if(randPool == null)
-            return;
-        
-        InitItemInfo(randPool);
-        InitTriggerInfo(randPool);
     }
 
     public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps)
     {
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
         
-        if (changedProps.ContainsKey("PlayerReady"))
+        if (changedProps.ContainsKey("BoardGameReady"))
         {
             GameStart();
         }
@@ -132,8 +151,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             currentTurn = (int)propertiesThatChanged["PlayerTurn"];
             IsMyTurn = currentTurn == myOrder;
+
+            int bTurn = 0;
+            if (propertiesThatChanged.ContainsKey("BoardGameTurn"))
+                bTurn = (int)propertiesThatChanged["BoardGameTurn"];
             
-            TurnStart();
+            if(bTurn == 2)
+                SceneLoad(Minigame1Scene);
+            else if(bTurn == 4)
+                SceneLoad(Minigame2Scene);
+            else
+                TurnStart();
         }
 
         if (propertiesThatChanged.ContainsKey("itemSetting"))
@@ -148,11 +176,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         
         if (propertiesThatChanged.ContainsKey("GameWinner"))
         {
-            if(PhotonNetwork.IsMasterClient == false)
-                return;
-            
-            PhotonNetwork.LoadLevel(EndingScene);
+            SceneLoad(EndingScene);
         }
+    }
+
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        if (newPlayer.CustomProperties.ContainsKey("PlayerTurn"))
+            GameStart();
     }
 
     #endregion
@@ -167,18 +199,37 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("IceCubeIdx"))
             iceIdx = (int)PhotonNetwork.LocalPlayer.CustomProperties["IceCubeIdx"];
 
+        Quaternion playerRot = Quaternion.identity;
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("PlayerRot"))
+            playerRot = (Quaternion)PhotonNetwork.LocalPlayer.CustomProperties["PlayerRot"];
+
         IceCube targetCube = StageManager.Instance.iceCubes[iceIdx];
         Vector3 cubePosition = targetCube.transform.position;
         cubePosition.y = 2.115f;
-        
-        MyPlayer = PhotonNetwork.Instantiate("BoardGamePlayer", cubePosition, Quaternion.identity);
-        MyPlayer.GetComponent<BoardGamePlayer>().SetCamera(cameraObj.transform);
-        
-        var diceObj = PhotonNetwork.Instantiate("Dice", Vector3.zero, Quaternion.identity);
-        MyDice = diceObj.GetComponent<Dice>();
-        MyDice.Icecube = targetCube;
 
-        
+        if (MyPlayer == null)
+        {
+            MyPlayer = PhotonNetwork.Instantiate("BoardGamePlayer", cubePosition, playerRot);
+            MyPlayer.GetComponent<BoardGamePlayer>().SetCamera(cameraObj.transform);
+            
+            PhotonView pv = MyPlayer.GetComponent<PhotonView>();
+            Hashtable hs = new Hashtable();
+            hs.Add("PlayerView", pv.ViewID);
+            PhotonNetwork.SetPlayerCustomProperties(hs);
+        }
+
+        if (MyDice == null)
+        {
+            var diceObj = PhotonNetwork.Instantiate("Dice", Vector3.zero, Quaternion.identity);
+            MyDice = diceObj.GetComponent<Dice>();
+            MyDice.Icecube = targetCube;
+            
+            PhotonView pv = MyDice.GetComponent<PhotonView>();
+            Hashtable hs = new Hashtable();
+            hs.Add("DiceView", pv.ViewID);
+            PhotonNetwork.SetPlayerCustomProperties(hs);
+        }
+
         if (CheckIsAllReady() == false)
         {
             guideUI.gameObject.SetActive(true);
@@ -187,6 +238,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             RoomDataLoad();
         }
+        
+        
+        ItemPosition.Instance.SetItemFromNetwork();
+        ItemPosition.Instance.SetTriggerFromNetwork();
+                
+        List<int> randPool = InitRandomPool();
+        if(randPool == null)
+            return;
+        
+        InitItemInfo(randPool);
+        InitTriggerInfo(randPool);
     }
 
     private void RoomDataLoad()
@@ -195,9 +257,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (roomProps.ContainsKey("PlayerTurn"))
         {
             currentTurn = (int)roomProps["PlayerTurn"];
+            myOrder = (int)PhotonNetwork.LocalPlayer.CustomProperties["PlayerOrder"];
             IsMyTurn = currentTurn == myOrder;
             
-            NextTurn();
+            TurnStart();
         }
     }
 
@@ -235,7 +298,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void GameReady()
     {
         Hashtable hs = new Hashtable();
-        hs.Add("PlayerReady", true);
+        hs.Add("BoardGameReady", true);
         
         PhotonNetwork.SetPlayerCustomProperties(hs);
         GameStart();
@@ -245,21 +308,38 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient == false)
             return;
-
+        
         if(CheckIsAllReady() == false)
             return;
+
+        Room room = PhotonNetwork.CurrentRoom;
+
+        int turn = 0;
+        if(room.CustomProperties.ContainsKey("PlayerTurn"))
+            turn = (int)room.CustomProperties["PlayerTurn"];
+        
+        Debug.Log($"turn : {turn}");
         
         Hashtable hs = new Hashtable();
-        hs.Add("PlayerTurn", 0);
+        hs.Add("PlayerTurn", turn);
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+    }
+
+    private void SceneLoad(string sceneName)
+    {
+        if(PhotonNetwork.IsMasterClient == false)
+            return;
+        
+        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.LoadLevel(sceneName);
     }
 
     private bool CheckIsAllReady()
     {
         foreach (var p in PhotonNetwork.PlayerList)
         {
-            if(p.CustomProperties.ContainsKey("PlayerReady") == false)
+            if(p.CustomProperties.ContainsKey("BoardGameReady") == false)
                 return false;
         }
         
@@ -274,15 +354,35 @@ public class GameManager : MonoBehaviourPunCallbacks
         MyDice.gameObject.SetActive(true);
         MyDice.DiceSetActive();
     }
-
+    
     public void NextTurn()
     {
-        int nextTurn = (currentTurn + 1) % PhotonNetwork.CurrentRoom.PlayerCount;
+        Room room = PhotonNetwork.CurrentRoom;
+        int nextTurn = (currentTurn + 1) % room.PlayerCount;
         
         Hashtable hs = new Hashtable();
         hs.Add("PlayerTurn", nextTurn);
 
+        int bTurn = 0;
+
+        if (room.CustomProperties.ContainsKey("BoardGameTurn"))
+            bTurn = (int)room.CustomProperties["BoardGameTurn"];
+
+        bTurn++;
+        
+        if(nextTurn == 0)
+            hs.Add("BoardGameTurn", bTurn);
+        
         PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+    }
+
+    public void SavePosition(int cubeIdx)
+    {
+        Hashtable hs = new Hashtable();
+        hs.Add("IceCubeIdx", cubeIdx);
+        hs.Add("PlayerRot", transform.rotation);
+        
+        PhotonNetwork.SetPlayerCustomProperties(hs);
     }
 
     public List<int> InitRandomPool()
@@ -348,9 +448,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void GetItem(GameObject item)
+    public void GetItem(int itemIdx, int itemType)
     {
-        int itemIdx = ItemPosition.Instance.items.IndexOf(item);
         if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("itemSetting"))
         {
             int[] itemSettings = (int[])PhotonNetwork.CurrentRoom.CustomProperties["itemSetting"];
@@ -359,6 +458,18 @@ public class GameManager : MonoBehaviourPunCallbacks
             Hashtable hs = new Hashtable();
             hs.Add("itemSetting", itemSettings);
             PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+        }
+
+        {
+            int itemCount = 0;
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey($"itemType_{itemType}"))
+                itemCount = (int)PhotonNetwork.LocalPlayer.CustomProperties[$"itemType_{itemType}"];
+
+            itemCount++;
+            
+            Hashtable hs = new Hashtable();
+            hs.Add($"itemType_{itemType}", itemCount);
+            PhotonNetwork.SetPlayerCustomProperties(hs);
         }
     }
 
@@ -369,6 +480,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
     }
 
+    public void GoToIsland()
+    {
+        Hashtable hs = new Hashtable();
+        hs.Add("island", PhotonNetwork.LocalPlayer);
+        PhotonNetwork.SetPlayerCustomProperties(hs);
+        
+        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+        PhotonNetwork.DestroyAll(true);
+        
+        PhotonNetwork.AutomaticallySyncScene = false;
+        SceneManager.LoadScene(IslandScene);
+    }
+    
     #endregion
     
     
