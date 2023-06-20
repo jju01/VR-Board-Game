@@ -19,7 +19,6 @@ public class Player : MonoBehaviourPunCallbacks
     public GameObject readycheck;
 
     public Texture[] textures;
-    public GameObject nocolorText;
 
     private void Awake()
     {

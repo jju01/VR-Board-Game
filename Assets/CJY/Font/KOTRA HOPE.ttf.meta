@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 957c9292d479f7a44aa2f9c4e6e5087b
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - KOTRA HOPE
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a25f6a7993dcecd4f8c8b52b26419de8, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

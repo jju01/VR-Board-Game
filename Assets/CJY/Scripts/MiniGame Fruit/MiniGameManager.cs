@@ -44,9 +44,7 @@ public class MiniGameManager : MonoBehaviour
     void Start()
     {
         timerText.text = timer.ToString();
-        gameOverPanel.SetActive(false);
-        resultPanel.SetActive(false);
-        itemPanel.SetActive(false);
+      
         // 처음점수(=0) 저장
         SaveScore();
     }
@@ -150,7 +148,7 @@ public class MiniGameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f);
         gameOverPanel.SetActive(false);
         resultPanel.SetActive(true);
-        yield return new WaitForSecondsRealtime(2.5f);
+        yield return new WaitForSecondsRealtime(5f);
         resultPanel.SetActive(false);
         itemPanel.SetActive(true);
     }

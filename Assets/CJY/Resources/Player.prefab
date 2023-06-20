@@ -172,7 +172,7 @@ Transform:
   m_GameObject: {fileID: 3597173278407181231}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6236104368092744455}
@@ -218,12 +218,12 @@ MonoBehaviour:
   characterRenderer: {fileID: 8845215176666758242}
   readycheck: {fileID: 5635853877169786626}
   textures:
-  - {fileID: 2800000, guid: bd4d9ee589fcc0a4f9e0d4bf6882bc5c, type: 3}
-  - {fileID: 2800000, guid: ee91afefa71815c408407072aa20a68e, type: 3}
-  - {fileID: 2800000, guid: 4671458c5f9a5334ea45b5da2e0488ac, type: 3}
+  - {fileID: 2800000, guid: 5e4bc2cb0b3b45648b266fb1818c3357, type: 3}
+  - {fileID: 2800000, guid: 46e242f67338f554a9adc112d6292d0b, type: 3}
+  - {fileID: 2800000, guid: 60b7de222cf73c94c9111d3acef1d9db, type: 3}
   - {fileID: 2800000, guid: e569433e2f29446469a94ee6940ea0db, type: 3}
-  - {fileID: 2800000, guid: 7939e88d4cfc6364ea51ac2f8250f974, type: 3}
-  - {fileID: 2800000, guid: 98c63fc5b2c555d499dad65978b8ced9, type: 3}
+  - {fileID: 2800000, guid: 2d92780bbf5a082448b611c8ef0ebd78, type: 3}
+  - {fileID: 2800000, guid: f3b1642c62b6ef442bf376096a474bbf, type: 3}
 --- !u!114 &8562139639003952971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,8 +327,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 85dc1e724dae0e2438f9a470f4b04ddc, type: 2}
+  m_sharedMaterial: {fileID: -2416890724420502582, guid: 85dc1e724dae0e2438f9a470f4b04ddc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

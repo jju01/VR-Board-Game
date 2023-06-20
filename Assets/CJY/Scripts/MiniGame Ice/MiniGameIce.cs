@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 // 역할 : 얼음이 그릇에 모두 충돌했을 때 게임 클리어
 
@@ -17,6 +18,7 @@ public class MiniGameIce : MonoBehaviour
 
     [Space]
     // 게임종료 패널
+    public GameObject menuPanel;
     public GameObject gameOverPanel;
     public GameObject resultPanel;
     public GameObject itemPanel;
@@ -27,6 +29,8 @@ public class MiniGameIce : MonoBehaviour
     public bool isend = false;
 
     public GameObject game;
+
+    public TextMeshProUGUI winnerText;
 
     private ExitGames.Client.Photon.Hashtable PlayerCustomProperties = new ExitGames.Client.Photon.Hashtable();
     private string miniGameIceKey = "MiniGameIce";
@@ -93,8 +97,9 @@ public class MiniGameIce : MonoBehaviour
 
             PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
 
-            // 이름 불러오기 함수실행
-
+            // 이름 불러오기 함수 실행
+            WinnerPlayer(PhotonNetwork.NickName);
+            // 게임 종료 함수
             OnGameEnd();
         }
 
@@ -142,5 +147,9 @@ public class MiniGameIce : MonoBehaviour
         Debug.Log("메인씬으로 쭈고");
     }
 
-    // 우승자 이름 ㄴ
+    // 우승자 이름 나오는 함수
+    public void WinnerPlayer(string name)
+    {
+        winnerText.text = name;
+    }
 }
