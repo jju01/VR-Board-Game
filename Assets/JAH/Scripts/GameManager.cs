@@ -220,6 +220,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (MyDice == null)
         {
+            print("주사위");
             var diceObj = PhotonNetwork.Instantiate("Dice", Vector3.zero, Quaternion.identity);
             MyDice = diceObj.GetComponent<Dice>();
             MyDice.Icecube = targetCube;
