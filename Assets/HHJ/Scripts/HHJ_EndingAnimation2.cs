@@ -73,14 +73,14 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     private Texture[] textures;
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("PlayerObj").transform;
         ani = player.GetComponent<Animator>();
-        crown = GameObject.FindGameObjectWithTag("Crown").transform;
+        crown = GameObject.FindGameObjectWithTag("CrownObj").transform;
 
         // 오브젝트 비활성화
         SetActiveObj(false);
 
-        PlayerName();     
+        PlayerName();
     }
 
     private void Update()
