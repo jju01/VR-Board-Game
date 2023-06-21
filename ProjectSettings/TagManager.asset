@@ -12,6 +12,11 @@ TagManager:
   - NetWorkManager
   - FxTemporaire
   - Dice
+  - IceObj
+  - SpoonObj
+  - CrownObj
+  - PlayerObj
+  - Objs
   layers:
   - Default
   - TransparentFX

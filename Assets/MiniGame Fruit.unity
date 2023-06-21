@@ -1866,9 +1866,13 @@ MonoBehaviour:
   scoreText:
   - {fileID: 8788092191703755939}
   - {fileID: 1598296228}
+  - {fileID: 1144940714}
+  - {fileID: 1609521534}
   nameText:
   - {fileID: 22546052205327133}
   - {fileID: 992214717}
+  - {fileID: 508139605}
+  - {fileID: 190459646}
   scoreList: 
 --- !u!114 &1072522890
 MonoBehaviour:
