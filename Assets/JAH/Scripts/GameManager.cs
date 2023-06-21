@@ -31,7 +31,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public ItemManager _itemManager;
     public MiniGameItemUI _miniGameItemUI;
-    
+
+    // 다른사람들에게  알려주는 UI
+    public GameObject minigameresultUI;
     public GameObject cameraObj;
     public GameObject MyPlayer;
     public Dice MyDice;
@@ -194,6 +196,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
                 
                 Invoke("GameStart", 4.5f);
+                
             }
         }
 
@@ -570,7 +573,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     #endregion
-    
-    
 
+
+    // 다른 사람들에게도 미니게임 결과를 알려주는 UI활성화
+
+    //IEnumerator MinigameResult()
+    //{
+    //   new WaitForSeconds(4.5f);
+    //    minigameresultUI.SetActive(true);
+    //    // 2) 5초 기다림
+    //    yield return new WaitForSeconds(5.0f);
+    //    minigameresultUI.SetActive(false);
+
+    //}
 }
