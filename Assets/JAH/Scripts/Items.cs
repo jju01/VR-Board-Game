@@ -22,16 +22,7 @@ public class Items : MonoBehaviour
     private void Start()
     {
         ItemManager IM = FindObjectOfType<ItemManager>();
-        
-        for (int i = 0; i < 4; i++)
-        {
-            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey($"itemType_{i}") == false)
-                continue;
-            
-            int itemCount = (int)PhotonNetwork.LocalPlayer.CustomProperties[$"itemType_{i}"];
-            if(itemCount > 0)
-                IM.UIItems[i].SetActive(true);;
-        }
+        IM.RefreshItemState();
     }
 
     private void OnTriggerEnter(Collider other)

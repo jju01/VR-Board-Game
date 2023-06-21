@@ -131,7 +131,10 @@ public class MiniGameIce : MonoBehaviour
         itemPanel.SetActive(true);
         yield return new WaitForSecondsRealtime(5f);
         itemPanel.SetActive(false);
-        PhotonNetwork.LoadLevel("Main");
+        
+        Debug.Log("PhotonNetwork.LoadLevel(Main)");
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("Main");
     }
 
     //// 시간 멈춤 => 게임끝나면 동작일시정지하고 UI창만 나오게끔...
