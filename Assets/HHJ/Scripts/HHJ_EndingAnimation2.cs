@@ -69,7 +69,8 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     [Space]
     [SerializeField]
     private TextMeshProUGUI winnerName;
-
+    [SerializeField]
+    private Texture[] textures;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -216,6 +217,12 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     {
         Photon.Realtime.Player winner = (Photon.Realtime.Player)PhotonNetwork.CurrentRoom.CustomProperties["GameWinner"];
         winnerName.text = winner.NickName;
+    }
+    public void SetWinner(string name, int textureIdx)
+    {
+        Transform meshObj = player.transform.FindChildRecursive("RetopoFlow");
+        SkinnedMeshRenderer mesh = meshObj.GetComponent<SkinnedMeshRenderer>();
+        mesh.materials[0].mainTexture = textures[textureIdx];
     }
 
     IEnumerator EndingPlay()

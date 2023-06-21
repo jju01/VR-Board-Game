@@ -1473,7 +1473,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 696183120}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -16634,6 +16634,8 @@ MonoBehaviour:
   useVRController: 1
   guideUI: {fileID: 2100762085}
   iteminventoryUI: {fileID: 1891743860}
+  _itemManager: {fileID: 1490627773}
+  _miniGameItemUI: {fileID: 152372604}
   cameraObj: {fileID: 0}
   MyPlayer: {fileID: 0}
   MyDice: {fileID: 0}
@@ -16667,7 +16669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a97653c4e12ce841a5bfeb9eb1f2e78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useVRController: 0
+  useVRController: 1
 --- !u!1 &1526160938
 GameObject:
   m_ObjectHideFlags: 0
@@ -22175,11 +22177,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1998257238}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de3898b8aac7cdb45864d1fe5e4d2124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  graphicRaycaster: {fileID: 638799675}
+  cam: {fileID: 696183120}
+  lineDistance: 50
+  lineWidth: 0.5
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  endColor: {r: 1, g: 1, b: 1, a: 1}
+  marker: {fileID: 1701127755}
+  adjustSize: 0.1
 --- !u!114 &1998257240
 MonoBehaviour:
   m_ObjectHideFlags: 0
