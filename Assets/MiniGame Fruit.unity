@@ -1565,10 +1565,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -177848986224405372, guid: eddab5d703152fd43b9b02fe00071f9a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 91863beb24136d94589679869101ec80, type: 2}
     - target: {fileID: 919132149155446097, guid: eddab5d703152fd43b9b02fe00071f9a, type: 3}
       propertyPath: m_Name
       value: katana
       objectReference: {fileID: 0}
+    - target: {fileID: 7550729477610686354, guid: eddab5d703152fd43b9b02fe00071f9a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 91863beb24136d94589679869101ec80, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eddab5d703152fd43b9b02fe00071f9a, type: 3}
 --- !u!4 &787917389 stripped
