@@ -154,10 +154,29 @@ public class MiniGameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(5f);
         resultPanel.SetActive(false);
         itemPanel.SetActive(true);
+        // timescale = 1 로 만들기 !
         yield return new WaitForSecondsRealtime(4f);
         Time.timeScale = 1;
         yield return new WaitForSecondsRealtime(1f);
         itemPanel.SetActive(false);
         PhotonNetwork.LoadLevel("Main");
     }
+
+    //IEnumerator OnPanel()
+    //{
+    //    print("실행");
+    //    yield return new WaitForSecondsRealtime(0.8f); // WaitForSecondsRealtime = timeScale 에 영향 x
+    //    gameOverPanel.SetActive(true);
+    //    yield return new WaitForSecondsRealtime(2f);
+    //    gameOverPanel.SetActive(false);
+    //    resultPanel.SetActive(true);
+    //    yield return new WaitForSecondsRealtime(5f);
+    //    resultPanel.SetActive(false);
+    //    itemPanel.SetActive(true);
+    ////    time Scale = 1로 만들기 !(수정버전)
+    //   yield return new WaitForSecondsRealtime(5f);
+    //    itemPanel.SetActive(false);
+    //    Time.timeScale = 1;
+    //    PhotonNetwork.LoadLevel("Main");
+    //}
 }
