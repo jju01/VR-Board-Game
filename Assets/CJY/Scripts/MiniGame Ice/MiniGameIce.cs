@@ -13,8 +13,9 @@ public class MiniGameIce : MonoBehaviour
 
     // 효과음
     //private AudioSource audio;
+
     // 정지상태 
-    private bool IsPause;
+    //private bool IsPause;
 
     [Space]
     // 게임종료 패널
@@ -133,8 +134,8 @@ public class MiniGameIce : MonoBehaviour
         itemPanel.SetActive(false);
         
         Debug.Log("PhotonNetwork.LoadLevel(Main)");
-        if(PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel("Main");
+       // if(PhotonNetwork.IsMasterClient)
+        PhotonNetwork.LoadLevel("Main");
     }
 
     //// 시간 멈춤 => 게임끝나면 동작일시정지하고 UI창만 나오게끔...
@@ -149,11 +150,11 @@ public class MiniGameIce : MonoBehaviour
     //}
 
     // 아이템창 끄기
-    public void OnClickItemClose()
-    {
-        itemPanel.SetActive(false);
-        Debug.Log("메인씬으로 쭈고");
-    }
+    //public void OnClickItemClose()
+    //{
+    //    itemPanel.SetActive(false);
+    //    Debug.Log("메인씬으로 쭈고");
+    //}
 
     // 우승자 이름 나오는 함수
     public void WinnerPlayer(string name)
