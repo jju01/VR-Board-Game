@@ -277,6 +277,7 @@ public class Dice : MonoBehaviour
                     }
 
                     Invoke("DoneAction", 1.5f);
+                    Invoke("DiceTurnUI", 1.5f);
                 }
 
                 break;
@@ -340,6 +341,7 @@ public class Dice : MonoBehaviour
     //주사위 차례를 알려주는 UI활성화
     IEnumerator DiceTurnUI()
     {
+        yield return new WaitForSeconds(4.5f);
         diceturnui.SetActive(true);
         // 2) 5초 기다림
         yield return new WaitForSeconds(5.0f);

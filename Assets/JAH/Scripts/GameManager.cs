@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject MyPlayer;
     public Dice MyDice;
 
+    // 미니게임 인트로
+    public GameObject minigameFruit_Itr;
+    public GameObject minigameIce_Itr;
+
     public int currentTurn;
     public int myOrder;
 
@@ -210,11 +214,12 @@ public class GameManager : MonoBehaviourPunCallbacks
             int bTurn = 0;
             if (propertiesThatChanged.ContainsKey("BoardGameTurn"))
                 bTurn = (int)propertiesThatChanged["BoardGameTurn"];
-            
-            if(bTurn == 2)
-                SceneLoad(Minigame1Scene);
-            else if(bTurn == 4)
-                SceneLoad(Minigame2Scene);
+
+            if (bTurn == 2)
+                StartCoroutine(MinigameFruit());
+            else if (bTurn == 4)
+                StartCoroutine(MinigameIce());
+                
             else
                 TurnStart();
         }
@@ -259,8 +264,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             playerRot = (Quaternion)PhotonNetwork.LocalPlayer.CustomProperties["PlayerRot"];
 
         IceCube targetCube = StageManager.Instance.iceCubes[iceIdx];
-        Vector3 cubePosition = targetCube.transform.position;
-        cubePosition.y = 2.115f;
+        Vector3 cubePosition = targetCube.transform.position + (targetCube.transform.up*2.2f);
+        //cubePosition.y = 0.0001f;
 
         if (MyPlayer == null)
         {
@@ -586,4 +591,25 @@ public class GameManager : MonoBehaviourPunCallbacks
     //    minigameresultUI.SetActive(false);
 
     //}
+
+    // 미니게임 인트로 나오고나서 신전환!
+    IEnumerator MinigameFruit()
+    {
+        minigameFruit_Itr.gameObject.SetActive(true);
+        print("실행1");
+        yield return new WaitForSeconds(5);
+        minigameFruit_Itr.gameObject.SetActive(false);
+        print("실행2");
+        SceneLoad(Minigame1Scene);
+    }
+
+    IEnumerator MinigameIce()
+    {
+        minigameIce_Itr.gameObject.SetActive(true);
+        print("실행1");
+        yield return new WaitForSeconds(5);
+        minigameIce_Itr.gameObject.SetActive(false);
+        print("실행2");
+        SceneLoad(Minigame2Scene);
+    }
 }
