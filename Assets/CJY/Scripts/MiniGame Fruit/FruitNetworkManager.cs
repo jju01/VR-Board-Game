@@ -174,7 +174,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
 
 
 
-            if (scoreCount == 4)
+            if (scoreCount == 2)
 
 
             {

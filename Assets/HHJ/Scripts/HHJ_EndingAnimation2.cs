@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
 {
     [SerializeField]
@@ -87,6 +88,13 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     {
         // 애니메이션 재생
         StartCoroutine(EndingPlay());
+
+        // 만일 애니메이션이 전부 실행되었다면 일정 시간 후 씬을 이동한다.
+        if ((ani.GetCurrentAnimatorStateInfo(0).IsName("metarig|Victory") &&
+        ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f))
+        {
+            Invoke("MoveStartScene", 5f);
+        }
     }
 
     // 발판이 위에서 아래로 올라온다.
@@ -224,6 +232,12 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
         SkinnedMeshRenderer mesh = meshObj.GetComponent<SkinnedMeshRenderer>();
         mesh.materials[0].mainTexture = textures[textureIdx];
     }
+    // 스타트씬으로 이동한다
+    public void MoveStartScene()
+    {
+        // 스타트씬으로 이동한다. 
+        PhotonNetwork.LoadLevel("CJY 1");
+    }
 
     IEnumerator EndingPlay()
     {
@@ -236,5 +250,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(3f);
         DropCrown();
         AnimationPlay();
+
+
     }
 }
