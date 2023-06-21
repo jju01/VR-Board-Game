@@ -62,6 +62,7 @@ MonoBehaviour:
   - {fileID: 6173073656120256813}
   - {fileID: 5696084544744306062}
   - {fileID: 2841090555979885932}
+  forceDice: 0
   moveValue: 0
   isMoving: 0
   isRolling: 0
