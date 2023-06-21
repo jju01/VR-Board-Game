@@ -11,11 +11,19 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    public string nickname;
     public string Minigame1Scene;
     public string Minigame2Scene;
-    public string IslandScene;
     public string EndingScene;
+
+    public GameObject mainOVRCamera;
+    public GameObject islandOVRCamera;
+
+    public Camera uiCameraForMain;
+    public Camera uiCameraForIsland;
     
+    public GameObject islandPref;
+    private GameObject islandObj;
     
     // VR Controller 사용 여부
     public bool useVRController = false;
@@ -31,6 +39,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public ItemManager _itemManager;
     public MiniGameItemUI _miniGameItemUI;
+    public LerpList _lerpList;
+    public TriggerNoticeManager _triggerNoticeManager;
+    public CanvasList _canvasList;
 
     // 다른사람들에게  알려주는 UI
     public GameObject minigameresultUI;
@@ -99,28 +110,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
-            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("island"))
-            {
-                
-                currentTurn = (int)PhotonNetwork.CurrentRoom.CustomProperties["PlayerTurn"];
-                myOrder = (int)PhotonNetwork.LocalPlayer.CustomProperties["PlayerOrder"];
-                IsMyTurn = currentTurn == myOrder;
-
-                if (IsMyTurn)
-                {
-                    Hashtable hs = new Hashtable();
-                    hs.Add("island", null);
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(hs);
-                    
-                    NextTurn();
-                }
-
-                GoToIsland();
-            }
-            else
-            {
-                BoardGameReady();   
-            }
+            BoardGameReady();
         }
         else
         {
@@ -136,6 +126,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
+        PhotonNetwork.NickName = nickname;
         PhotonNetwork.JoinOrCreateRoom("VR Board Game", new RoomOptions(), TypedLobby.Default);
     }
 
@@ -204,6 +195,25 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
         }
 
+        if (propertiesThatChanged.ContainsKey("TriggerNotice_1_Player"))
+        {
+            string playerName = propertiesThatChanged["TriggerNotice_1_Player"].ToString();
+            _triggerNoticeManager.SetTriggerNotice1(playerName);
+        }
+        
+        if (propertiesThatChanged.ContainsKey("TriggerNotice_2_Player"))
+        {
+            string playerName = propertiesThatChanged["TriggerNotice_2_Player"].ToString();
+            string targetName = propertiesThatChanged["TriggerNotice_2_Target"].ToString();
+            _triggerNoticeManager.SetTriggerNotice2(playerName, targetName);
+        }
+        
+        if (propertiesThatChanged.ContainsKey("TriggerNotice_3_Player"))
+        {
+            string playerName = propertiesThatChanged["TriggerNotice_3_Player"].ToString();
+            _triggerNoticeManager.SetTriggerNotice3(playerName);
+        }
+        
         if (propertiesThatChanged.ContainsKey("PlayerTurn"))
         {
             _itemManager.RefreshItemState();
@@ -323,7 +333,13 @@ public class GameManager : MonoBehaviourPunCallbacks
             currentTurn = (int)roomProps["PlayerTurn"];
             myOrder = (int)PhotonNetwork.LocalPlayer.CustomProperties["PlayerOrder"];
             IsMyTurn = currentTurn == myOrder;
-            
+
+            bool inIsland = PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("island"); 
+            if (inIsland)
+            {
+                GoToIsland();
+            }
+
             if (roomProps.ContainsKey("winItemOwner"))
             {
                 Photon.Realtime.Player player = (Photon.Realtime.Player)roomProps["winItemOwner"];
@@ -332,6 +348,16 @@ public class GameManager : MonoBehaviourPunCallbacks
                     _miniGameItemUI.OpenUI();
                 }
 
+                return;
+            }
+            
+            if (inIsland && IsMyTurn)
+            {
+                Hashtable hs = new Hashtable();
+                hs.Add("island", null);
+                PhotonNetwork.LocalPlayer.SetCustomProperties(hs);
+                    
+                NextTurn();
                 return;
             }
             
@@ -425,8 +451,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(myOrder != currentTurn)
             return;
         
-        MyDice.gameObject.SetActive(true);
-        MyDice.DiceSetActive();
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("island"))
+        {
+            BackToMainBoardGame();
+        }
+        else
+        {
+            MyDice.gameObject.SetActive(true);
+            MyDice.DiceSetActive();   
+        }
     }
     
     public void NextTurn()
@@ -559,12 +592,41 @@ public class GameManager : MonoBehaviourPunCallbacks
         Hashtable hs = new Hashtable();
         hs.Add("island", PhotonNetwork.LocalPlayer);
         PhotonNetwork.SetPlayerCustomProperties(hs);
+
+        if (islandObj == null)
+            islandObj = Instantiate(islandPref);
         
-        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
-        PhotonNetwork.DestroyAll(true);
+        islandObj.SetActive(true);
         
-        PhotonNetwork.AutomaticallySyncScene = false;
-        SceneManager.LoadScene(IslandScene);
+        mainOVRCamera.SetActive(false);
+        islandOVRCamera.SetActive(true);
+        
+        foreach (var lerpUI in _lerpList.lerUis)
+            lerpUI.target = islandOVRCamera.transform;
+        
+        foreach (var canvas in _canvasList.canvasList)
+            canvas.worldCamera = uiCameraForIsland;
+    }
+
+    public void BackToMainBoardGame()
+    {
+        Hashtable hs = new Hashtable();
+        hs.Add("island", null);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hs);
+
+        if (islandObj != null)
+            islandObj.SetActive(false);
+        
+        mainOVRCamera.SetActive(true);
+        islandOVRCamera.SetActive(false);
+        
+        foreach (var lerpUI in _lerpList.lerUis)
+            lerpUI.target = mainOVRCamera.transform;
+        
+        foreach (var canvas in _canvasList.canvasList)
+            canvas.worldCamera = uiCameraForMain;
+        
+        NextTurn();
     }
 
     public void SetWinnerItem()

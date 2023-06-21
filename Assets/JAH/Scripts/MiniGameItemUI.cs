@@ -12,7 +12,9 @@ public class MiniGameItemUI : MonoBehaviour
     public Button btnBack;
     
     public Photon.Realtime.Player[] players;
-    
+
+    public RectTransform rect;
+
     public GameObject uiSelectPlayer;
     public List<Button> btnPlayers;
     public List<TMP_Text> txtPlayers;
@@ -121,6 +123,7 @@ public class MiniGameItemUI : MonoBehaviour
         targetName.text = targetPlayer;
         uiNotice.SetActive(true);
         
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
         Invoke("NoticeDone", 3);
     }
 

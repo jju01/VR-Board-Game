@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Photon.Pun;
+using TMPro;
 using Random = UnityEngine.Random;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 // 역할 1: 주사위를 굴린다
 // 역할 2: 주사위 수만큼 Player를 이동시킨다 (IceCube 스크립트)
@@ -18,6 +20,8 @@ public class Dice : MonoBehaviour
     // 주사위 리스트 (Basic Model, 1~6)
     public List<GameObject> DiceList = new List<GameObject>();
 
+    public int forceDice;
+    
     // IceCube
     public IceCube Icecube { get; set; }
 
@@ -70,6 +74,14 @@ public class Dice : MonoBehaviour
         if(diceturnui == null)
         {
             diceturnui = Instantiate(diceturnuiPref);
+            
+            TMP_Text nameText = diceturnui.GetComponentInChildren<TMP_Text>();
+            nameText.text = pv.Owner.NickName;
+            
+            LerpManager lerpUI = diceturnui.GetComponentInChildren<LerpManager>();
+            LerpList lerpList = GameManager.Instance._lerpList; 
+            lerpList.lerUis.Add(lerpUI);
+            
             diceturnui.SetActive(false);
         }
         rotX = transform.DOBlendableRotateBy(Vector3.right * 80, 0.7f).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
@@ -98,8 +110,9 @@ public class Dice : MonoBehaviour
         RandomDiceList();
         
         baseDice.SetActive(true);
-        // //주사위 차례를 알려주는 UI활성화
-        StartCoroutine(DiceTurnUI());
+        // //주사위 차례를 알려주는 UI활성화 - 네트워크로 알리기
+        //StartCoroutine(DiceTurnUI());
+        pv.RPC("SetDiceTurnUI", RpcTarget.All, true);
 
         effectparticle.transform.position = transform.position + (Vector3.down * 0.486f);
         
@@ -129,8 +142,9 @@ public class Dice : MonoBehaviour
         
         // 2. 1~6 주사위 랜덤 활성화
         curDice = Random.Range(0, DiceList.Count);
-        moveValue = curDice+1;
+        moveValue = forceDice == 0 ? curDice+1 : forceDice;
 
+        
         rotX.Pause();
         rotY.Pause();
         rotZ.Pause();
@@ -140,6 +154,7 @@ public class Dice : MonoBehaviour
         transform.DOScale(Vector3.zero, 0.2f).SetDelay(1.5f);
 
         pv.RPC("SetDice", RpcTarget.All, curDice);
+        pv.RPC("SetDiceTurnUI", RpcTarget.All, false);
         
         // 3. 1초 뒤 숫자 UI  + 파티클 + 효과음 재생
         // 4. 1초 뒤 숫자 UI  + 파티클 + 효과음 비활성화
@@ -222,12 +237,19 @@ public class Dice : MonoBehaviour
         switch (Icecube.trigger.type)
         {
             case Trigger.Type.A:
+            {
                 int random = Random.Range(1, 4);
                 moveValue = random;
                 MoveToNext();
+                
+                Hashtable hs = new Hashtable();
+                hs.Add("TriggerNotice_1_Player", PhotonNetwork.NickName);
+                PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+            }
                 break;
-            
+
             case Trigger.Type.B:
+            {
                 List<Photon.Realtime.Player> playerList = new List<Photon.Realtime.Player>();
                 foreach (var player in PhotonNetwork.PlayerList)
                 {
@@ -257,6 +279,11 @@ public class Dice : MonoBehaviour
 
                         bPlayer.SetPosition(mPlayerPos);
                         mPlayer.SetPosition(bPlayerPos);
+                        
+                        Hashtable hs = new Hashtable();
+                        hs.Add("TriggerNotice_2_Player", PhotonNetwork.NickName);
+                        hs.Add("TriggerNotice_2_Target", pv.Owner.NickName);
+                        PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
                     }
 
                     {
@@ -279,11 +306,17 @@ public class Dice : MonoBehaviour
                     Invoke("DoneAction", 1.5f);
                     Invoke("DiceTurnUI", 1.5f);
                 }
-
+            }
                 break;
-            
+
             case Trigger.Type.C:
+            {
                 DiceSetActive();
+
+                Hashtable hs = new Hashtable();
+                hs.Add("TriggerNotice_3_Player", PhotonNetwork.NickName);
+                PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+            }
                 break;
         }
     }
@@ -294,11 +327,17 @@ public class Dice : MonoBehaviour
         GameManager.Instance.SavePosition(cubePosition);
         GameManager.Instance.NextTurn();
             
-        // if(cubePosition == StageManager.Instance.islandCubeIdx)
-        //     GameManager.Instance.GoToIsland();
+        if(cubePosition == StageManager.Instance.islandCubeIdx)
+            GameManager.Instance.GoToIsland();
     }
 
+    public void SetCube(int idx)
+    {
+        pv.RPC("RecvCube", RpcTarget.All, idx);
+    }
 
+    #region RPC
+    
     [PunRPC]
     public void SetDice(int idx)
     {
@@ -321,15 +360,8 @@ public class Dice : MonoBehaviour
         effectparticle.SetActive(false);
         baseDice.gameObject.SetActive(true);
         DiceList[idx].gameObject.SetActive(false);
-
-    
     }
-
     
-    public void SetCube(int idx)
-    {
-        pv.RPC("RecvCube", RpcTarget.All, idx);
-    }
 
     [PunRPC]
     public void RecvCube(int idx)
@@ -338,11 +370,20 @@ public class Dice : MonoBehaviour
         Icecube = StageManager.Instance.iceCubes[idx];
     }
 
+    [PunRPC]
+    public void SetDiceTurnUI(bool active)
+    {
+        diceturnui.SetActive(active);
+    }
+    
+    #endregion
+
     //주사위 차례를 알려주는 UI활성화
     IEnumerator DiceTurnUI()
     {
-        yield return new WaitForSeconds(4.5f);
+        yield return new WaitForSeconds(0.5f);
         diceturnui.SetActive(true);
+        
         // 2) 5초 기다림
         yield return new WaitForSeconds(5.0f);
         diceturnui.SetActive(false);
