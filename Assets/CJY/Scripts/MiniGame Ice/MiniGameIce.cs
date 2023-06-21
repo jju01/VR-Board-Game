@@ -29,6 +29,8 @@ public class MiniGameIce : MonoBehaviour
 
     public bool isend = false;
 
+    public bool isPlaying = false;
+
     public GameObject game;
 
     public TextMeshProUGUI winnerText;
@@ -116,12 +118,16 @@ public class MiniGameIce : MonoBehaviour
         // 게임 화면 일시정지
         // PauseGame();
         // UI 창 실행
-        StartCoroutine(OnPanel());
+        
+        if(isPlaying == false)
+            StartCoroutine(OnPanel());
     }
 
     // 게임 종료 & 결과 UI 창 나오는 함수
     IEnumerator OnPanel()
     {
+        isPlaying = true;
+
         yield return new WaitForSecondsRealtime(1f); // WaitForSecondsRealtime = timeScale 에 영향 x
         gameOverPanel.SetActive(true);
         yield return new WaitForSecondsRealtime(2f);
@@ -134,8 +140,8 @@ public class MiniGameIce : MonoBehaviour
         itemPanel.SetActive(false);
         
         Debug.Log("PhotonNetwork.LoadLevel(Main)");
-       // if(PhotonNetwork.IsMasterClient)
-        PhotonNetwork.LoadLevel("Main");
+        if(PhotonNetwork.IsMasterClient)
+            PhotonNetwork.LoadLevel("Main");
     }
 
     //// 시간 멈춤 => 게임끝나면 동작일시정지하고 UI창만 나오게끔...
