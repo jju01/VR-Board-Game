@@ -77,13 +77,19 @@ public class Trigger : MonoBehaviour
         //4) Trigger_1~3 설명 UI 활성화
         switch (type)
         {
-            // 만일 Item type이 A라면, GItem UI 활성화 + 플레이어 쪽으로 방향 설정..
+            
             case Type.A:
                 IM.TriggerUI[0].SetActive(true);
                 IM.TriggerUI[0].transform.position = gameObject.transform.position + Vector3.forward * 2f;
                 IM.TriggerUI[0].transform.LookAt(GameManager.Instance.MyPlayer.transform);
                 yield return new WaitForSeconds(2.0f);
                 IM.TriggerUI[0].SetActive(false);
+
+                // 다른 사람에게도 알려주는 UI 활성화
+                IM.TriggerUI2[0].SetActive(true);
+                print("ui2!!!");
+                yield return new WaitForSeconds(2.0f);
+                IM.TriggerUI2[0].SetActive(false);
                 break;
             case Type.B:
                 IM.TriggerUI[1].SetActive(true);
@@ -91,6 +97,12 @@ public class Trigger : MonoBehaviour
                 IM.TriggerUI[1].transform.LookAt(GameManager.Instance.MyPlayer.transform);
                 yield return new WaitForSeconds(2.0f);
                 IM.TriggerUI[1].SetActive(false);
+
+                // 다른 사람에게도 알려주는 UI 활성화
+                IM.TriggerUI2[1].SetActive(true);
+                print("ui2!!!");
+                yield return new WaitForSeconds(2.0f);
+                IM.TriggerUI2[1].SetActive(false);
                 break;
             case Type.C:
                 IM.TriggerUI[2].SetActive(true);
@@ -98,6 +110,12 @@ public class Trigger : MonoBehaviour
                 IM.TriggerUI[2].transform.LookAt(GameManager.Instance.MyPlayer.transform);
                 yield return new WaitForSeconds(2.0f);
                 IM.TriggerUI[2].SetActive(false);
+
+                // 다른 사람에게도 알려주는 UI 활성화
+                IM.TriggerUI2[2].SetActive(true);
+                print("ui2!!!");
+                yield return new WaitForSeconds(2.0f);
+                IM.TriggerUI2[2].SetActive(false);
                 break;
         }
     }

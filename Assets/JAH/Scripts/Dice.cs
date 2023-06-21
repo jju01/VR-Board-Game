@@ -41,6 +41,10 @@ public class Dice : MonoBehaviour
     public GameObject effectparticlePref;
     public GameObject effectparticle;
 
+    // 주사위 차례를 알려주는 UI
+    public GameObject diceturnuiPref;
+    public GameObject diceturnui;
+
     private void Awake()
     {
         InitDice();
@@ -63,6 +67,11 @@ public class Dice : MonoBehaviour
             effectparticle.SetActive(false);
         }
         
+        if(diceturnui == null)
+        {
+            diceturnui = Instantiate(diceturnuiPref);
+            diceturnui.SetActive(false);
+        }
         rotX = transform.DOBlendableRotateBy(Vector3.right * 80, 0.7f).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo).SetAutoKill(false);
         rotY = transform.DOBlendableRotateBy(Vector3.up * 360, 1.7f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
         rotZ = transform.DOBlendableRotateBy(Vector3.forward * 360, 1.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Incremental).SetAutoKill(false);
@@ -89,6 +98,8 @@ public class Dice : MonoBehaviour
         RandomDiceList();
         
         baseDice.SetActive(true);
+        // //주사위 차례를 알려주는 UI활성화
+        StartCoroutine(DiceTurnUI());
 
         effectparticle.transform.position = transform.position + (Vector3.down * 0.486f);
         
@@ -295,7 +306,8 @@ public class Dice : MonoBehaviour
 
         // 주사위 결과 나올 때 파티클,
         effectparticle.SetActive(true);
-        
+
+      
         // 효과음 활성화
         effectaudio.Stop();
         effectaudio.Play();
@@ -323,6 +335,16 @@ public class Dice : MonoBehaviour
     {
         Debug.Log($"RecvCube : {idx}");
         Icecube = StageManager.Instance.iceCubes[idx];
+    }
+
+    //주사위 차례를 알려주는 UI활성화
+    IEnumerator DiceTurnUI()
+    {
+        diceturnui.SetActive(true);
+        // 2) 5초 기다림
+        yield return new WaitForSeconds(5.0f);
+        diceturnui.SetActive(false);
+        
     }
 }
 
