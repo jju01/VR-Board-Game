@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     // 아이템 인벤토리 UI
     public GameObject iteminventoryUI;
 
+    public ItemManager _itemManager;
+    public MiniGameItemUI _miniGameItemUI;
+    
     public GameObject cameraObj;
     public GameObject MyPlayer;
     public Dice MyDice;
@@ -116,6 +119,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         else
         {
             PhotonNetwork.AutomaticallySyncScene = true;
+
             PhotonNetwork.ConnectUsingSettings();
         }
     }
@@ -148,9 +152,55 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         base.OnRoomPropertiesUpdate(propertiesThatChanged);
-        
+
+        if (propertiesThatChanged.ContainsKey("winItemOwner"))
+        {
+            if (propertiesThatChanged["winItemOwner"] == null)
+            {
+                if (propertiesThatChanged.ContainsKey("winPlayer"))
+                {
+                    var winPlayer = (Photon.Realtime.Player)propertiesThatChanged["winPlayer"];
+                    var targetPlayer = (Photon.Realtime.Player)propertiesThatChanged["targetPlayer"];
+                    var item = propertiesThatChanged["item"].ToString();
+
+                    if (winPlayer.IsLocal)
+                    {
+                        int itemCount = 0;
+                        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(item))
+                            itemCount = (int)PhotonNetwork.LocalPlayer.CustomProperties[item];
+
+                        itemCount++;
+            
+                        Hashtable hs = new Hashtable();
+                        hs.Add(item, itemCount);
+                        PhotonNetwork.SetPlayerCustomProperties(hs);
+                    }
+                
+                    if (targetPlayer.IsLocal)
+                    {
+                        int itemCount = 0;
+                        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(item))
+                            itemCount = (int)PhotonNetwork.LocalPlayer.CustomProperties[item];
+
+                        itemCount--;
+            
+                        Hashtable hs = new Hashtable();
+                        hs.Add(item, itemCount);
+                        PhotonNetwork.SetPlayerCustomProperties(hs);
+                    }
+
+                    _miniGameItemUI.NoticeItemState(winPlayer.NickName, targetPlayer.NickName, item);
+                }
+
+                
+                Invoke("GameStart", 4.5f);
+            }
+        }
+
         if (propertiesThatChanged.ContainsKey("PlayerTurn"))
         {
+            _itemManager.RefreshItemState();
+            
             currentTurn = (int)propertiesThatChanged["PlayerTurn"];
             IsMyTurn = currentTurn == myOrder;
 
@@ -158,11 +208,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (propertiesThatChanged.ContainsKey("BoardGameTurn"))
                 bTurn = (int)propertiesThatChanged["BoardGameTurn"];
             
-            //if(bTurn == 2)
-            //    SceneLoad(Minigame1Scene);
-            //else if(bTurn == 4)
-            //    SceneLoad(Minigame2Scene);
-            //else
+            if(bTurn == 2)
+                SceneLoad(Minigame1Scene);
+            else if(bTurn == 4)
+                SceneLoad(Minigame2Scene);
+            else
                 TurnStart();
         }
 
@@ -222,7 +272,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (MyDice == null)
         {
-            print("주사위");
             var diceObj = PhotonNetwork.Instantiate("Dice", Vector3.zero, Quaternion.identity);
             MyDice = diceObj.GetComponent<Dice>();
             MyDice.Icecube = targetCube;
@@ -259,11 +308,23 @@ public class GameManager : MonoBehaviourPunCallbacks
         iteminventoryUI.SetActive(true);
 
         var roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+
         if (roomProps.ContainsKey("PlayerTurn"))
         {
             currentTurn = (int)roomProps["PlayerTurn"];
             myOrder = (int)PhotonNetwork.LocalPlayer.CustomProperties["PlayerOrder"];
             IsMyTurn = currentTurn == myOrder;
+            
+            if (roomProps.ContainsKey("winItemOwner"))
+            {
+                Photon.Realtime.Player player = (Photon.Realtime.Player)roomProps["winItemOwner"];
+                if (player.IsLocal)
+                {
+                    _miniGameItemUI.OpenUI();
+                }
+
+                return;
+            }
             
             TurnStart();
         }
@@ -323,8 +384,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if(room.CustomProperties.ContainsKey("PlayerTurn"))
             turn = (int)room.CustomProperties["PlayerTurn"];
         
-        Debug.Log($"turn : {turn}");
-        
+        Debug.Log($"GameStart - Turn : {turn}");
         Hashtable hs = new Hashtable();
         hs.Add("PlayerTurn", turn);
 
@@ -497,7 +557,18 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = false;
         SceneManager.LoadScene(IslandScene);
     }
-    
+
+    public void SetWinnerItem()
+    {
+        var roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+        if (roomProps.ContainsKey("winItemOwner"))
+            return;
+        
+        Hashtable hs = new Hashtable();
+        hs.Add("winItemOwner", PhotonNetwork.LocalPlayer);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+    }
+
     #endregion
     
     

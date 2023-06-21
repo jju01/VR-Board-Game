@@ -101,6 +101,8 @@ public class ScoreManager : MonoBehaviour
                         CustomProperties.Add($"winner1", p.NickName);
 
                         PhotonNetwork.SetPlayerCustomProperties(CustomProperties);
+                        
+                        GameManager.Instance.SetWinnerItem();
                     }
                 }
             }
