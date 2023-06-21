@@ -74,7 +74,7 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     private Texture[] textures;
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("PlayerObj").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         ani = player.GetComponent<Animator>();
         crown = GameObject.FindGameObjectWithTag("CrownObj").transform;
 
