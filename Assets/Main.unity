@@ -5460,8 +5460,8 @@ MonoBehaviour:
   speed: 5
   target: {fileID: 0}
   rotSpeed: 3
-  fowardFactor: 6
-  upFactor: 2
+  fowardFactor: 5
+  upFactor: 1.5
 --- !u!1001 &534593505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13212,8 +13212,8 @@ MonoBehaviour:
   speed: 5
   target: {fileID: 0}
   rotSpeed: 3
-  fowardFactor: 6
-  upFactor: 2
+  fowardFactor: 5
+  upFactor: 1.5
 --- !u!1001 &1353409504
 PrefabInstance:
   m_ObjectHideFlags: 0
