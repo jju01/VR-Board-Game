@@ -19,6 +19,7 @@ public class ItemManager : MonoBehaviour
 
     // Trigger UI2 (다른사람에게도 알려주는) 리스트
     public GameObject[] TriggerUI2;
+
     // Player 와 Item이 부딪혔을 때 카운트 
     public int count = 0;
 
