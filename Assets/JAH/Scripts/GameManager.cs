@@ -227,8 +227,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             if (bTurn == 2)
                 StartCoroutine(MinigameIce());
-            else if (bTurn == 4)
-                StartCoroutine(MinigameFruit());
+            //else if (bTurn == 4)
+            //    StartCoroutine(MinigameFruit());
 
 
             else
