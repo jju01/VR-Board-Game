@@ -6,19 +6,13 @@ public class Fruit : MonoBehaviour
 {
     public GameObject whole;
     public GameObject sliced;
-    public ParticleSystem brokeParticle1;
-    public ParticleSystem brokeParticle2;
-    public ParticleSystem brokeParticle3;
-    public ParticleSystem brokeParticle4;
+    public ParticleSystem[] brokeParticle;
 
     public int points = 1;
 
     private void Awake()
     {
-        brokeParticle1 = GetComponentInChildren<ParticleSystem>();
-        brokeParticle2 = GetComponentInChildren<ParticleSystem>();
-        brokeParticle3 = GetComponentInChildren<ParticleSystem>();
-        brokeParticle4 = GetComponentInChildren<ParticleSystem>();
+        brokeParticle = GetComponentsInChildren<ParticleSystem>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,11 +23,12 @@ public class Fruit : MonoBehaviour
 
             whole.SetActive(false);
             sliced.SetActive(true);
+            
+            foreach(ParticleSystem particle in brokeParticle)
+                particle.Play();
 
-            brokeParticle1.Play();
-            brokeParticle2.Play();
-            brokeParticle3.Play();
-            brokeParticle4.Play();
+            //for(int i = 0; i < brokeParticle.Length; i++)
+            //    brokeParticle[i].Play();
         }
     }
 }
