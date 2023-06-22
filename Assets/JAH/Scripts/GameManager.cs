@@ -275,7 +275,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             playerRot = (Quaternion)PhotonNetwork.LocalPlayer.CustomProperties["PlayerRot"];
 
         IceCube targetCube = StageManager.Instance.iceCubes[iceIdx];
-        Vector3 cubePosition = targetCube.transform.position + (targetCube.transform.up*2f);
+        Vector3 cubePosition = targetCube.transform.position + (targetCube.transform.up*2.2f);
         //cubePosition.y = 0.0001f;
 
         if (MyPlayer == null)
