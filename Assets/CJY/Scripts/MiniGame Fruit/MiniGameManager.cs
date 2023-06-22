@@ -25,6 +25,8 @@ public class MiniGameManager : MonoBehaviour
     // ready 체크 
     public bool isready = false;
 
+    public bool isPlaying = false;
+
     private ExitGames.Client.Photon.Hashtable PlayerCustomProperties = new ExitGames.Client.Photon.Hashtable();
     private string miniGameFruitKey = "MiniGameFruit";
     private string miniGameFruitScore = "MiniGameFruitScore";
@@ -113,7 +115,7 @@ public class MiniGameManager : MonoBehaviour
                 FruiteSpawner.Instance.StopFruit();
                 isready = false;
                 OnGameEnd();
-                
+
             }
 
         }
@@ -139,14 +141,20 @@ public class MiniGameManager : MonoBehaviour
     {
         // 게임 종료!
         Debug.Log("게임종료!");
-        // UI 창 실행
-        StartCoroutine(OnPanel());
+
+        if (isPlaying == false)
+        {
+            // UI 창 실행
+            StartCoroutine(OnPanel());
+        }
     }
 
 
     // 게임 종료 & 결과 UI 창 나오는 함수
     IEnumerator OnPanel()
     {
+        isPlaying = true;
+
         print("실행");
         yield return new WaitForSecondsRealtime(1f); // WaitForSecondsRealtime = timeScale 에 영향 x
         gameOverPanel.SetActive(true);
@@ -160,7 +168,10 @@ public class MiniGameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(5f);
         //Time.timeScale = 1;
         itemPanel.SetActive(false);
-        PhotonNetwork.LoadLevel("Main");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Main");
+        }
     }
 
     //IEnumerator OnPanel()
