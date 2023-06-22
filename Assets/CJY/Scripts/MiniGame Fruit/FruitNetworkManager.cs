@@ -175,7 +175,7 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
                 print("올라감");
             }
 
-            if (scoreCount == 2)
+            if (scoreCount == 4)
             {
                 Debug.Log("UI ");
                 // 점수 띄우기

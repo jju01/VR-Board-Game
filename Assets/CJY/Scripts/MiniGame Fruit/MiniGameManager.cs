@@ -11,7 +11,7 @@ public class MiniGameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     // ≈∏¿Ã∏” 
-    private float timer = 20.0f;
+    private float timer = 30.0f;
     public TextMeshProUGUI timerText;
 
     [Space]
