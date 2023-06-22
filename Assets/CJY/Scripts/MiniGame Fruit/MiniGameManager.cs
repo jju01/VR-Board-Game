@@ -20,6 +20,7 @@ public class MiniGameManager : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject resultPanel;
     public GameObject itemPanel;
+    public GameObject startPanel;
 
     // ready üũ 
     public bool isready = false;
