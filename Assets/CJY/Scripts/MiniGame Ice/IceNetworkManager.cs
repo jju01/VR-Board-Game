@@ -103,9 +103,9 @@ public class IceNetworkManager : MonoBehaviourPunCallbacks
         MiniGameIce.Instance.menuPanel.SetActive(true);
         yield return new WaitForSeconds(10f);
         MiniGameIce.Instance.menuPanel.SetActive(false);
-        MiniGameManager.Instance.startPanel.SetActive(true);
+        MiniGameIce.Instance.startPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
-        MiniGameManager.Instance.startPanel.SetActive(false);
+        MiniGameIce.Instance.startPanel.SetActive(false);
         MiniGameIce.Instance.isstart = true;
         if (MiniGameIce.Instance.isstart == true)
         {
