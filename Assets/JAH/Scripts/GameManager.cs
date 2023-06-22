@@ -53,6 +53,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject minigameFruit_Itr;
     public GameObject minigameIce_Itr;
 
+    // 무인도 가이드 UI
+    public GameObject IslandUI;
+
     public int currentTurn;
     public int myOrder;
 
@@ -606,6 +609,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         
         foreach (var canvas in _canvasList.canvasList)
             canvas.worldCamera = uiCameraForIsland;
+
+        StartCoroutine(IslandUIActive());
     }
 
     public void BackToMainBoardGame()
@@ -643,17 +648,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     #endregion
 
 
-    // 다른 사람들에게도 미니게임 결과를 알려주는 UI활성화
-
-    //IEnumerator MinigameResult()
-    //{
-    //   new WaitForSeconds(4.5f);
-    //    minigameresultUI.SetActive(true);
-    //    // 2) 5초 기다림
-    //    yield return new WaitForSeconds(5.0f);
-    //    minigameresultUI.SetActive(false);
-
-    //}
 
     // 미니게임 인트로 나오고나서 신전환!
     IEnumerator MinigameFruit()
@@ -674,5 +668,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         minigameIce_Itr.gameObject.SetActive(false);
         print("실행2");
         SceneLoad(Minigame2Scene);
+    }
+
+
+    IEnumerator IslandUIActive()
+    {
+        IslandUI.gameObject.SetActive(true);
+        print("실행1");
+        yield return new WaitForSeconds(3);
+        IslandUI.gameObject.SetActive(false);
     }
 }

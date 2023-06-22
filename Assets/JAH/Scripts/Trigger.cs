@@ -49,6 +49,7 @@ public class Trigger : MonoBehaviour
                 triggerparticle.Play();
 
                 // 오디오 재생
+                TriggerSound.Instance.TriggereffectPlay();
 
                 // triggerui 애니메이션 실행
                 StartCoroutine(TriggerAnim());

@@ -93,8 +93,7 @@ public class MiniGameItemUI : MonoBehaviour
                 continue;
             }
 
-            txtCounts[i].text = $"x{count}";
-            btnItems[i].onClick.AddListener(() => { SelectDone(player, itemType); });
+           
         }
     }
 
