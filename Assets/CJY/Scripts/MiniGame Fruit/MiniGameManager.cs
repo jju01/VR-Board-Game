@@ -108,7 +108,8 @@ public class MiniGameManager : MonoBehaviour
 
                 PhotonNetwork.SetPlayerCustomProperties(PlayerCustomProperties);
 
-                Time.timeScale = 0;
+                //Time.timeScale = 0;
+                FruiteSpawner.Instance.StopFruit();
                 isready = false;
                 OnGameEnd();
                 
@@ -146,7 +147,7 @@ public class MiniGameManager : MonoBehaviour
     IEnumerator OnPanel()
     {
         print("실행");
-        yield return new WaitForSecondsRealtime(0.8f); // WaitForSecondsRealtime = timeScale 에 영향 x
+        yield return new WaitForSecondsRealtime(1f); // WaitForSecondsRealtime = timeScale 에 영향 x
         gameOverPanel.SetActive(true);
         yield return new WaitForSecondsRealtime(2f);
         gameOverPanel.SetActive(false);
@@ -155,9 +156,8 @@ public class MiniGameManager : MonoBehaviour
         resultPanel.SetActive(false);
         itemPanel.SetActive(true);
         // timescale = 1 로 만들기 !
-        yield return new WaitForSecondsRealtime(4f);
-        Time.timeScale = 1;
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(5f);
+        //Time.timeScale = 1;
         itemPanel.SetActive(false);
         PhotonNetwork.LoadLevel("Main");
     }
