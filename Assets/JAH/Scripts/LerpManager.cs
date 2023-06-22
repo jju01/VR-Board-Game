@@ -18,7 +18,7 @@ public class LerpManager : MonoBehaviour
 
     public float fowardFactor = 0;
     public float upFactor = 0;
-
+    public float rightFactor = 0;
     private void Update()
     {
         if(GameManager.Instance.MyPlayer == null)
@@ -35,7 +35,7 @@ public class LerpManager : MonoBehaviour
     {
         //  Target 을 쫓아 Lerp 이동
         transform.position
-            = Vector3.Lerp(transform.position, target.position + target.transform.forward * fowardFactor + target.transform.up * upFactor, speed * Time.deltaTime);
+            = Vector3.Lerp(transform.position, target.position + target.transform.forward * fowardFactor + target.transform.up * upFactor + target.transform.up * rightFactor, speed * Time.deltaTime);
         // Target이 바라보는 방향으로 회전
         transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, rotSpeed * Time.deltaTime);
     }

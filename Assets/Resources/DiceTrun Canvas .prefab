@@ -105,7 +105,7 @@ RectTransform:
   m_GameObject: {fileID: 1863073061624785055}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 2.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1863073062747338215}
@@ -195,7 +195,7 @@ MonoBehaviour:
   target: {fileID: 0}
   rotSpeed: 3
   fowardFactor: 6
-  upFactor: 3.5
+  upFactor: 1.7
 --- !u!1 &1863073061908020198
 GameObject:
   m_ObjectHideFlags: 0
