@@ -10,7 +10,7 @@ public class HHJ_Sound : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // 만약 부딪힌 물체가 플레이어
-        if (other.tag == "PlayerObj") 
+        if (other.tag == "Player") 
         {
             HHJ_SoundManager.Instance.DropPlayerSound();            
         }

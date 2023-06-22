@@ -72,6 +72,10 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     private TextMeshProUGUI winnerName;
     [SerializeField]
     private Texture[] textures;
+
+
+    private bool isMoveToStart = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -225,8 +229,11 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     {
         Photon.Realtime.Player winner = (Photon.Realtime.Player)PhotonNetwork.CurrentRoom.CustomProperties["GameWinner"];
         winnerName.text = winner.NickName;
+
+        int avatarIdx = (int)winner.CustomProperties["avatar"];
+        SetWinner(avatarIdx);
     }
-    public void SetWinner(string name, int textureIdx)
+    public void SetWinner(int textureIdx)
     {
         Transform meshObj = player.transform.FindChildRecursive("RetopoFlow");
         SkinnedMeshRenderer mesh = meshObj.GetComponent<SkinnedMeshRenderer>();
@@ -235,8 +242,13 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
     // 스타트씬으로 이동한다
     public void MoveStartScene()
     {
-        // 스타트씬으로 이동한다. 
-        PhotonNetwork.LoadLevel("CJY 1");
+        if (isMoveToStart)
+            return;
+
+        isMoveToStart = true;
+
+        // 접속종료
+        PhotonNetwork.LeaveRoom();
     }
 
     IEnumerator EndingPlay()
@@ -250,7 +262,14 @@ public class HHJ_EndingAnimation2 : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(3f);
         DropCrown();
         AnimationPlay();
-
-
     }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+
+        // 스타트씬으로 이동한다. 
+        PhotonNetwork.LoadLevel("CJY 1");
+    }
+
 }
