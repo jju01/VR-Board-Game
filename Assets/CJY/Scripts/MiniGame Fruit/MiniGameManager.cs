@@ -115,12 +115,9 @@ public class MiniGameManager : MonoBehaviour
                 FruiteSpawner.Instance.StopFruit();
                 isready = false;
                 OnGameEnd();
-
             }
-
         }
     }
-
     void SaveScore()
     {
         // 점수 동기화

@@ -63,9 +63,6 @@ public class Player : MonoBehaviourPunCallbacks
         PhotonNetwork.SetPlayerCustomProperties(CustomProperties);
     }
 
-    
-
-
     [PunRPC]
     public void ChangeColor(int i)
     {
@@ -77,7 +74,6 @@ public class Player : MonoBehaviourPunCallbacks
     {
         pv.RPC("ReadyIcorn", RpcTarget.All);
     }
-
 
     [PunRPC]
     public void ReadyIcorn()

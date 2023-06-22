@@ -29,23 +29,7 @@ public class ScoreManager : MonoBehaviour
     // 선택정렬하기
     public void ShowScore()
     {
-        // 플레이어 수만큼 점수 판 생성
-        //int i = 0;
-        //foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
-        //{
-        //    if (p.CustomProperties.ContainsKey("MiniGameFruitScore"))
-        //    {
-        //        nameText[i].text = p.NickName;
-
-        //        // scoreText.text = p.CustomProperties["MiniGameFruitScore"].ToString;
-        //        if (p.CustomProperties.TryGetValue("MiniGameFruitScore", out object score))
-        //        {
-        //            scoreText[i].text = score.ToString();
-        //        }
-        //    }
-        //    i++;
-        //}
-
+        
         scoreList = new List<int>();
         foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
         {
@@ -108,5 +92,23 @@ public class ScoreManager : MonoBehaviour
             }
         }
     }
+    #region
+    // 플레이어 수만큼 점수 판 생성
+    //int i = 0;
+    //foreach (Photon.Realtime.Player p in PhotonNetwork.CurrentRoom.Players.Values)
+    //{
+    //    if (p.CustomProperties.ContainsKey("MiniGameFruitScore"))
+    //    {
+    //        nameText[i].text = p.NickName;
+
+    //        // scoreText.text = p.CustomProperties["MiniGameFruitScore"].ToString;
+    //        if (p.CustomProperties.TryGetValue("MiniGameFruitScore", out object score))
+    //        {
+    //            scoreText[i].text = score.ToString();
+    //        }
+    //    }
+    //    i++;
+    //}
+    #endregion
 }
 
