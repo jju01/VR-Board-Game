@@ -5075,7 +5075,13 @@ MonoBehaviour:
   crown: {fileID: 1393737836}
   rotSpeed: 2
   winnerName: {fileID: 1147799815}
-  textures: []
+  textures:
+  - {fileID: 2800000, guid: 5e4bc2cb0b3b45648b266fb1818c3357, type: 3}
+  - {fileID: 2800000, guid: 46e242f67338f554a9adc112d6292d0b, type: 3}
+  - {fileID: 2800000, guid: 60b7de222cf73c94c9111d3acef1d9db, type: 3}
+  - {fileID: 2800000, guid: 741d67eabe8ce964981fd71894e414d3, type: 3}
+  - {fileID: 2800000, guid: 2d92780bbf5a082448b611c8ef0ebd78, type: 3}
+  - {fileID: 2800000, guid: f3b1642c62b6ef442bf376096a474bbf, type: 3}
 --- !u!114 &2058281793
 MonoBehaviour:
   m_ObjectHideFlags: 0
