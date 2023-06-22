@@ -160,6 +160,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     }
 
+    public void NOColorSelected()
+    {
+        StartCoroutine(NoColorSelect());
+    }
+
+    // ÀÌ¼±ÁÂ UI ¶ß´Â ÇÔ¼ö
+    IEnumerator NoColorSelect()
+    {
+        noColorPanel.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        noColorPanel.SetActive(false);
+    }
 
     [ContextMenu("Á¤º¸")]
     void Info()
@@ -176,18 +188,5 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
             Debug.Log(playerStr);
         }
-    }
-
-    public void NOColorSelected()
-    {
-        StartCoroutine(NoColorSelect());
-    }
-
-    // ÀÌ¼±ÁÂ UI ¶ß´Â ÇÔ¼ö
-    IEnumerator NoColorSelect()
-    {
-        noColorPanel.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        noColorPanel.SetActive(false);
     }
 }

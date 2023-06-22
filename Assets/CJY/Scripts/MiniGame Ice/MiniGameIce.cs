@@ -23,6 +23,7 @@ public class MiniGameIce : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject resultPanel;
     public GameObject itemPanel;
+    public GameObject startPanel;
 
     // start üũ
     public bool isstart = false;
