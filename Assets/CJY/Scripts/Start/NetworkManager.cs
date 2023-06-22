@@ -148,7 +148,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
 
-            if (readyCount == 3)
+            if (readyCount == 2)
 
 
 
