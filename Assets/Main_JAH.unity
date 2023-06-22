@@ -1587,7 +1587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.058
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1709,6 +1709,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 195030753}
     m_Modifications:
+    - target: {fileID: 1228692765593742663, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
+      propertyPath: m_RenderAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8757251097791642923, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
+      propertyPath: m_RenderAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8757251098020926710, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
+      propertyPath: m_RenderAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649440, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_Name
       value: ItemHaveEffect
@@ -1739,7 +1751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.084
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1771,6 +1783,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8757251098352570403, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
+      propertyPath: m_RenderAlignment
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -9557,7 +9573,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12004,6 +12020,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1490627771}
     m_Modifications:
+    - target: {fileID: 8788202296737947245, guid: 99729eba451d31d4383c670ff802e8d3, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8788202297310634244, guid: 99729eba451d31d4383c670ff802e8d3, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104141374367787744, guid: 99729eba451d31d4383c670ff802e8d3, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9104141374367787746, guid: 99729eba451d31d4383c670ff802e8d3, type: 3}
       propertyPath: m_Name
       value: 'SkullParticle '
@@ -16950,7 +16978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.084
       objectReference: {fileID: 0}
     - target: {fileID: 8757251098089649441, guid: 9aae0a4b858196d45b3b27f892754a6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -20225,7 +20253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1891743861
 RectTransform:
   m_ObjectHideFlags: 0
