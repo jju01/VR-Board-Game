@@ -471,6 +471,11 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!4 &204676319 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8473613527733085749, guid: 2480a4c7ede0bf5449cdbaca2052d92d, type: 3}
+  m_PrefabInstance: {fileID: 657002476}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &215251773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1573,6 +1578,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 782984077698412914, guid: 2480a4c7ede0bf5449cdbaca2052d92d, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2480a4c7ede0bf5449cdbaca2052d92d, type: 3}
 --- !u!1 &720872304 stripped
@@ -1965,7 +1974,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b9f549b3aa7a48a49968428cb6cda4c3, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 72d445f0bc01fd04ead358e7c9bc42e8, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.3
   m_Pitch: 1
@@ -2067,7 +2076,7 @@ MonoBehaviour:
   iceSound: {fileID: 8300000, guid: 2598385d214cc534593b9bdf902ea49a, type: 3}
   startSound: {fileID: 893266930}
   dropPlayer: {fileID: 893266935}
-  playerSound: {fileID: 8300000, guid: 3e4057c641008ee45ae7f4ddaae549ea, type: 3}
+  playerSound: {fileID: 8300000, guid: be14e5caf65801649923244a7a904b8b, type: 3}
   dropCrown: {fileID: 893266933}
   crownSound: {fileID: 8300000, guid: 2a5a7bb802f383149b2ee4ea9861f849, type: 3}
   dropObject: {fileID: 893266936}
@@ -2086,7 +2095,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2598385d214cc534593b9bdf902ea49a, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.812
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2470,7 +2479,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: bf9cf5afb2a45284f98de3cdcc70ac98, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.85
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2643,6 +2652,10 @@ PrefabInstance:
     - target: {fileID: 5654086526698387938, guid: bc8642a5a0adba04eb91a6ad8eac1fef, type: 3}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654086526698387938, guid: bc8642a5a0adba04eb91a6ad8eac1fef, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 17.055159
       objectReference: {fileID: 0}
     - target: {fileID: 5654086526698387938, guid: bc8642a5a0adba04eb91a6ad8eac1fef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3952,7 +3965,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 9.44, y: 3.96, z: 3.84}
-  m_Center: {x: 0, y: 212.8, z: 0}
+  m_Center: {x: 0, y: 12.37, z: 0}
 --- !u!114 &1369155791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4825,6 +4838,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1856329943 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 782984077698412914, guid: 2480a4c7ede0bf5449cdbaca2052d92d, type: 3}
+  m_PrefabInstance: {fileID: 657002476}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1892015259
 GameObject:
   m_ObjectHideFlags: 0
@@ -5049,7 +5067,7 @@ MonoBehaviour:
   buildObj5: {fileID: 879715249}
   buildPoint1: {fileID: 520954223}
   dropSpoonPos: {fileID: 1722427649}
-  dropCrownPos: {fileID: 0}
+  dropCrownPos: {fileID: 204676319}
   dropPlayerPos: {fileID: 1369155789}
   dropSpeed: 1.5
   intervalObjY: 6
@@ -5070,7 +5088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f902a51b56ac5914ba9edd9f0bc50f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 1856329943}
   textures:
   - {fileID: 2800000, guid: 5e4bc2cb0b3b45648b266fb1818c3357, type: 3}
   - {fileID: 2800000, guid: 46e242f67338f554a9adc112d6292d0b, type: 3}
