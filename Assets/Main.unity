@@ -20573,12 +20573,12 @@ MonoBehaviour:
   uiSelectPlayer: {fileID: 1352889486}
   btnPlayers:
   - {fileID: 1836010716}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 200541275}
+  - {fileID: 1893039500}
   txtPlayers:
   - {fileID: 1449956999}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1255673222}
+  - {fileID: 909788911}
   uiSelectItem: {fileID: 531713012}
   btnItems:
   - {fileID: 1454234167}
