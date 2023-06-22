@@ -108,6 +108,9 @@ public class FruitNetworkManager : MonoBehaviourPunCallbacks
         MiniGameManager.Instance.menuPanel.SetActive(true);
         yield return new WaitForSeconds(10f);
         MiniGameManager.Instance.menuPanel.SetActive(false);
+        MiniGameManager.Instance.startPanel.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        MiniGameManager.Instance.startPanel.SetActive(false);
         MiniGameManager.Instance.isready = true;
         FruiteSpawner.Instance.StartFruit();
     }
