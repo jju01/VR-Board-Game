@@ -103,6 +103,7 @@ public class MiniGameIce : MonoBehaviour
 
             // 이름 불러오기 함수 실행
             WinnerPlayer(PhotonNetwork.NickName);
+            GameManager.Instance.SetWinnerItem();
             // MiniGameIce.Instance.WinnerPlayer("$winner2");
 
             // 게임 종료 함수
