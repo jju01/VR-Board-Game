@@ -1195,7 +1195,7 @@ MonoBehaviour:
   rotSpeed: 3
   fowardFactor: 4
   upFactor: 1.2
-  rightFactor: 0
+  rightFactor: 1.5
 --- !u!1 &134469249
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,7 +1609,7 @@ MonoBehaviour:
   rotSpeed: 3
   fowardFactor: 4
   upFactor: 1.2
-  rightFactor: 0
+  rightFactor: 1.5
 --- !u!1001 &173388270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9520,7 +9520,7 @@ MonoBehaviour:
   speed: 5
   target: {fileID: 0}
   rotSpeed: 3
-  fowardFactor: 4
+  fowardFactor: 2.2
   upFactor: 0.7
   rightFactor: 0
 --- !u!114 &957444211
@@ -16299,7 +16299,7 @@ MonoBehaviour:
   islandOVRCamera: {fileID: 980154266}
   uiCameraForMain: {fileID: 696183120}
   uiCameraForIsland: {fileID: 257038883}
-  islandPref: {fileID: 1870250093069099417, guid: 966d33f66158440a292e9081ad5e2c35, type: 3}
+  islandPref: {fileID: 1782941224539120791, guid: 966d33f66158440a292e9081ad5e2c35, type: 3}
   useVRController: 1
   guideUI: {fileID: 2100762085}
   iteminventoryUI: {fileID: 1891743860}
@@ -22083,7 +22083,7 @@ MonoBehaviour:
   rotSpeed: 3
   fowardFactor: 4
   upFactor: 1.2
-  rightFactor: 0
+  rightFactor: 1.5
 --- !u!1001 &2008375653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22212,7 +22212,7 @@ MonoBehaviour:
   speed: 5
   target: {fileID: 0}
   rotSpeed: 3
-  fowardFactor: 4
+  fowardFactor: 2.2
   upFactor: 0.7
   rightFactor: 0
 --- !u!114 &2022554114
@@ -22381,7 +22381,7 @@ MonoBehaviour:
   speed: 5
   target: {fileID: 0}
   rotSpeed: 3
-  fowardFactor: 4
+  fowardFactor: 2.2
   upFactor: 0.7
   rightFactor: 0
 --- !u!114 &2028956456
@@ -22456,7 +22456,7 @@ MonoBehaviour:
   speed: 5
   target: {fileID: 0}
   rotSpeed: 3
-  fowardFactor: 4
+  fowardFactor: 2.2
   upFactor: 0.7
   rightFactor: 0
 --- !u!114 &2038403059
