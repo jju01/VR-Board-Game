@@ -11,7 +11,8 @@ using Photon.Pun;
 // >>  각 Trigger에 대한 설명(3개) -- > ItemManager 스크립트에서! 
 public class Trigger : MonoBehaviour
 {
-    // 파티클
+
+    // 파티클 
     public ParticleSystem triggerparticle;
     // Trigger 발동! UI
     public GameObject triggerui;
@@ -42,14 +43,14 @@ public class Trigger : MonoBehaviour
 
             if (GameManager.Instance.MyDice.moveValue <= 1)
             {
-            
+
                 triggerparticle.transform.position = gameObject.transform.position;
                 // 파티클 재생 
                 triggerparticle.Stop();
                 triggerparticle.Play();
 
                 // 오디오 재생
-                TriggerSound.Instance.TriggereffectPlay();
+                //TriggerSound.Instance.TriggereffectPlay();
 
                 // triggerui 애니메이션 실행
                 StartCoroutine(TriggerAnim());
@@ -57,7 +58,7 @@ public class Trigger : MonoBehaviour
         }
     }
 
-    IEnumerator TriggerAnim ()
+    IEnumerator TriggerAnim()
     {
         // 1) triggerui를 활성화한다.
         // Trigger발동! UI 활성화
@@ -78,46 +79,33 @@ public class Trigger : MonoBehaviour
         //4) Trigger_1~3 설명 UI 활성화
         switch (type)
         {
-            
+
             case Type.A:
                 IM.TriggerUI[0].SetActive(true);
                 IM.TriggerUI[0].transform.position = gameObject.transform.position + Vector3.forward * 2f;
                 IM.TriggerUI[0].transform.LookAt(GameManager.Instance.MyPlayer.transform);
                 yield return new WaitForSeconds(2.0f);
                 IM.TriggerUI[0].SetActive(false);
-
-                // 다른 사람에게도 알려주는 UI 활성화
-                IM.TriggerUI2[0].SetActive(true);
-                print("ui2!!!");
-                yield return new WaitForSeconds(2.0f);
-                IM.TriggerUI2[0].SetActive(false);
                 break;
+
             case Type.B:
                 IM.TriggerUI[1].SetActive(true);
                 IM.TriggerUI[1].transform.position = gameObject.transform.position + Vector3.forward * 2f;
                 IM.TriggerUI[1].transform.LookAt(GameManager.Instance.MyPlayer.transform);
                 yield return new WaitForSeconds(2.0f);
                 IM.TriggerUI[1].SetActive(false);
-
-                // 다른 사람에게도 알려주는 UI 활성화
-                IM.TriggerUI2[1].SetActive(true);
-                print("ui2!!!");
-                yield return new WaitForSeconds(2.0f);
-                IM.TriggerUI2[1].SetActive(false);
                 break;
+
             case Type.C:
                 IM.TriggerUI[2].SetActive(true);
                 IM.TriggerUI[2].transform.position = gameObject.transform.position + Vector3.forward * 2f;
                 IM.TriggerUI[2].transform.LookAt(GameManager.Instance.MyPlayer.transform);
                 yield return new WaitForSeconds(2.0f);
                 IM.TriggerUI[2].SetActive(false);
-
-                // 다른 사람에게도 알려주는 UI 활성화
-                IM.TriggerUI2[2].SetActive(true);
-                print("ui2!!!");
-                yield return new WaitForSeconds(2.0f);
-                IM.TriggerUI2[2].SetActive(false);
                 break;
         }
     }
+
+
+  
 }

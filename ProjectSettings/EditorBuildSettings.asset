@@ -10,7 +10,7 @@ EditorBuildSettings:
     guid: 48b6e6908a8c5974cbb58daf61d83de6
   - enabled: 1
     path: Assets/Main.unity
-    guid: a46507179b7237d499ef7bbbcb381c0c
+    guid: c1ba0d41f6e7d4d5394a6058ce6abd81
   - enabled: 1
     path: Assets/MiniGame Fruit.unity
     guid: 3973bcf68e597df40b36d590d1cccf9a

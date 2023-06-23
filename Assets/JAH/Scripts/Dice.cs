@@ -223,6 +223,7 @@ public class Dice : MonoBehaviour
         {
             if (Icecube.trigger)
             {
+                GameManager.Instance.NoticeTrigger((int)Icecube.trigger.type);
                 Invoke("TriggerAction", 5f);
             }
             else

@@ -66,7 +66,7 @@ MonoBehaviour:
   moveValue: 0
   isMoving: 0
   isRolling: 0
-  effectparticlePref: {fileID: 8288552635521919269, guid: 5bf76a8698d004b43962755fde7eb626, type: 3}
+  effectparticlePref: {fileID: 7880749613697972586, guid: 399dc795529aa8f46929a38f3bec3932, type: 3}
   effectparticle: {fileID: 0}
   diceturnuiPref: {fileID: 1863073061624785055, guid: 59a43dfdaba11d54e90ac48d8e91cda8, type: 3}
   diceturnui: {fileID: 0}

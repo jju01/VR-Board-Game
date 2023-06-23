@@ -147,6 +147,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             GameStart();
         }
+
+        if (changedProps.ContainsKey("triggerNotice"))
+        {
+            // UI 띄워주기
+            int triggerIdx = (int)changedProps["triggerNotice"];
+            _triggerNoticeManager.TriggerNotice(targetPlayer.NickName, (Trigger.Type)triggerIdx);
+        }        
     }
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
@@ -643,6 +650,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         Hashtable hs = new Hashtable();
         hs.Add("winItemOwner", PhotonNetwork.LocalPlayer);
         PhotonNetwork.CurrentRoom.SetCustomProperties(hs);
+    }
+
+    public void NoticeTrigger(int triggerIdx)
+    {
+        Hashtable hs = new Hashtable();
+        hs.Add("triggerNotice", triggerIdx);
+        PhotonNetwork.SetPlayerCustomProperties(hs);
     }
 
     #endregion

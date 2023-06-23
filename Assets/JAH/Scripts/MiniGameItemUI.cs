@@ -9,7 +9,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class MiniGameItemUI : MonoBehaviour
 {
-    public Button btnBack;
+    //public Button btnBack;
     
     public Photon.Realtime.Player[] players;
 
@@ -29,7 +29,7 @@ public class MiniGameItemUI : MonoBehaviour
     
     private void Start()
     {
-        btnBack.onClick.AddListener(BackToSelectPlayer);
+        //btnBack.onClick.AddListener(BackToSelectPlayer);
     }
 
     public void OpenUI()
