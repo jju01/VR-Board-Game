@@ -88,12 +88,13 @@ public class MiniGameItemUI : MonoBehaviour
 
             if(count == 0)
             {
-                txtCounts[i].text = $"x0";
+                txtCounts[i].text = $"X";
                 btnItems[i].onClick.RemoveAllListeners();
                 continue;
             }
+            txtCounts[i].text = $"0";
+            btnItems[i].onClick.AddListener(call: () => { SelectDone(player, itemType); });
 
-           
         }
     }
 

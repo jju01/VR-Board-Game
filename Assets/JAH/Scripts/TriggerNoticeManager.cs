@@ -57,7 +57,7 @@ public class TriggerNoticeManager : MonoBehaviour
     public void TriggerNotice(string playerName, Trigger.Type type)
     {
 
-       StartCoroutine("TriggerAnim2(Trigger.Type type)");
+       StartCoroutine(TriggerAnim2(type));
     }
 
     IEnumerator TriggerAnim2(Trigger.Type type)

@@ -235,10 +235,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (propertiesThatChanged.ContainsKey("BoardGameTurn"))
                 bTurn = (int)propertiesThatChanged["BoardGameTurn"];
 
-            //if (bTurn == 2)
-            //    StartCoroutine(MinigameIce());
-            //else if (bTurn == 4)
-            //    StartCoroutine(MinigameFruit());
+            if (bTurn == 2)
+                StartCoroutine(MinigameFruit());
+
+            else if (bTurn == 4)
+                StartCoroutine(MinigameIce());
 
 
             else

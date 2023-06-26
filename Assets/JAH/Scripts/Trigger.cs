@@ -54,6 +54,8 @@ public class Trigger : MonoBehaviour
 
                 // triggerui 애니메이션 실행
                 StartCoroutine(TriggerAnim());
+                // 트리거에 닿으면 매쉬 잠깐 사라지게
+                StartCoroutine(TriggerMeshActive());
             }
         }
     }
@@ -106,6 +108,11 @@ public class Trigger : MonoBehaviour
         }
     }
 
-
+    IEnumerator TriggerMeshActive()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+        yield return new WaitForSeconds(5);
+        transform.GetChild(0).gameObject.SetActive(true);
+    }
   
 }
